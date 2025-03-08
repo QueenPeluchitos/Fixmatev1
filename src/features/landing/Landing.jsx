@@ -1,6 +1,9 @@
+import { ImgC } from "./components/ImgC";
+
 const Landing= () => {
   return (
     <div>
+      
       <div className="min-h-screen bg-gray-200 flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold text-blue-600 mb-4">
         ¡Tailwind está funcionando!
@@ -9,6 +12,7 @@ const Landing= () => {
         Botón de prueba
       </button>
     </div>
+    <ImgC />
     </div>
   );
 }

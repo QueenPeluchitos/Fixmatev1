@@ -6,7 +6,7 @@ const Login = () => {
           {/* Sección izquierda */}
           <div className="w-1/2 flex flex-col justify-center text-center p-6">
             <div className="mb-6">
-              <img src="assets/images/fixmatelogo.png" alt="Logo" className="mx-auto h-16" />
+              <img src="/images/fixmatelogo.png" alt="Logo" className="mx-auto h-16" />
             </div>
             <h2 className="text-2xl font-bold text-gray-700">Bienvenido de nuevo</h2>
             <p className="text-gray-500 mb-4">Inicia sesión para continuar</p>
@@ -39,8 +39,8 @@ const Login = () => {
             </p>
           </div>
           {/* Sección derecha con imagen */}
-          <div className="w-1/2 flex items-center justify-center bg-yellow-100 rounded-r-2xl p-6">
-            <img src="/path-to-your-image.png" alt="Ilustración" className="max-w-full h-auto" />
+          <div className="w-1/2 flex items-center justify-center bg-yellow-50 rounded-r-2xl p-6">
+            <img src="/images/imglog.png" alt="Ilustración" className="max-w-full h-auto" />
           </div>
         </div>
       </div>

@@ -1,9 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 // Componente del perfil desplegable
 function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const handleLogout = () => {
+    Cookies.remove('authToken');
+    navigate('/login');
+  };
   return (
     <div className="relative">
       {/* Imagen que activa el desplegable */}
@@ -20,7 +27,7 @@ function ProfileDropdown() {
           <ul className="py-2 text-gray-700">
             <li className="px-4 py-2 hover:bg-amber-100 cursor-pointer">Perfil</li>
             <li className="px-4 py-2 hover:bg-amber-100 cursor-pointer">Configuración</li>
-            <li className="px-4 py-2 hover:bg-amber-100 cursor-pointer">Cerrar sesión</li>
+            <li onClick={handleLogout} className="px-4 py-2 hover:bg-amber-100 cursor-pointer">Cerrar sesión </li>
           </ul>
         </div>
       )}

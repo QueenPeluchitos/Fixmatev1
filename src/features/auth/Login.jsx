@@ -65,7 +65,7 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="flex bg-gradient-to-b from-white to-yellow-200 p-12 rounded-2xl shadow-lg w-[50rem]">
+      <div className="flex bg-white p-12 rounded-2xl shadow-lg w-[50rem]">
         {/* Sección izquierda */}
         <div className="w-1/2 flex flex-col justify-center text-center p-6">
           <div className="mb-6">

@@ -1,11 +1,11 @@
-import Header from './Header';
 import Footer from './Footer';
 import { Outlet } from 'react-router-dom';
+import Sidebar from './Sidebar';
 
 const Layout=()=>{
     return (
-        <>
-            <Header/>
+        <>  
+            <Sidebar/>         
             <main>
                 <Outlet/>
             </main>

@@ -1,38 +1,36 @@
+import { Twitter, Instagram, Send, Facebook } from 'lucide-react';
+
 export default function Footer() {
-    return (
-      <footer className="bg-[#3B4371] text-yellow-400 p-6 flex justify-between items-start shadow-md">
-        <div className="flex flex-col items-center">
-          <img src="/logo.png" alt="FixMate Logo" className="h-16" />
+  return (
+    <footer className="bg-sky-900 text-white w-full">
+      <div className="container mx-auto px-6 py-4 max-w-1xl  flex justify-between items-center bot">
+        <div>
+          <h2 className="text-2xl font-bold">FixMate</h2>
+          <p className="text-xs text-gray-300 mt-1">© FixMate 2024. Derechos reservados</p>
         </div>
-        <div className="flex flex-col">
-          <h3 className="font-bold">Fixmate</h3>
-          <a href="#" className="text-sm hover:underline">Servicios</a>
-          <a href="#" className="text-sm hover:underline">Populares</a>
-          <a href="#" className="text-sm hover:underline">Iniciar sesión</a>
+
+        <div className="hidden md:flex space-x-8">
+          <a href="#features" className="hover:text-gray-300 uppercase text-sm font-medium">Features</a>
+          <a href="#services" className="hover:text-gray-300 uppercase text-sm font-medium">Servicios</a>
+          <a href="#pricing" className="hover:text-gray-300 uppercase text-sm font-medium">Precios</a>
+          <a href="#howto" className="hover:text-gray-300 uppercase text-sm font-medium">Preguntas frecuentes</a>
         </div>
-        <div className="flex flex-col">
-          <h3 className="font-bold">Servicios</h3>
-          <a href="#" className="text-sm hover:underline">Ver servicios</a>
-          <a href="#" className="text-sm hover:underline">Crear servicio</a>
-          <a href="#" className="text-sm hover:underline">Reportes</a>
+
+        <div className="flex space-x-3">
+          <a href="#" className="bg-gray-900 p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <Twitter size={18} />
+          </a>
+          <a href="#" className="bg-gray-900 p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <Instagram size={18} />
+          </a>
+          <a href="#" className="bg-gray-900 p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <Send size={18} />
+          </a>
+          <a href="#" className="bg-gray-900 p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <Facebook size={18} />
+          </a>
         </div>
-        <div className="flex flex-col">
-          <h3 className="font-bold">Soporte</h3>
-          <a href="#" className="text-sm hover:underline">FAQ</a>
-          <a href="#" className="text-sm hover:underline">Texto</a>
-          <a href="#" className="text-sm hover:underline">Texto</a>
-        </div>
-        <div className="flex flex-col">
-          <h3 className="font-bold">Contáctanos</h3>
-          <p className="text-sm">Tel. +52 000 000 0000</p>
-          <p className="text-sm">Correo Tlacuacode@gmail.com</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <h3 className="font-bold">Términos y condiciones</h3>
-          <img src="/user.png" alt="User image" className="h-10 w-10 rounded-full mt-2" />
-          <p className="text-sm">Tlacuacode</p>
-        </div>
-      </footer>
-    );
-  }
-  
+      </div>
+    </footer>
+  );
+}

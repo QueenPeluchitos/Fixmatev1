@@ -2,8 +2,8 @@ import { Twitter, Instagram, Send, Facebook } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-sky-900 text-white w-full">
-      <div className="container mx-auto px-6 py-4 max-w-1xl  flex justify-between items-center bot">
+    <footer className="bg-sky-900 text-white w-full fixed bottom-0">
+      <div className="container mx-auto px-6 py-4 max-w-1xl flex justify-between items-center bot">
         <div>
           <h2 className="text-2xl font-bold">FixMate</h2>
           <p className="text-xs text-gray-300 mt-1">© FixMate 2024. Derechos reservados</p>

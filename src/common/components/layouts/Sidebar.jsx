@@ -32,7 +32,7 @@ export default function Sidebar() {
     >
       {/* Logo */}
       <div className="flex items-center gap-2 px-1 mb-6">
-        <img src="../assets/fm1.png" alt="FixMate" className="w-8 h-8" />
+        <img src="../assets/fm1.png " alt="FixMate" className="w-8 h-8" />
         {isHovered && <span className="font-bold text-lg text-gray-800">FixMate</span>}
       </div>
 

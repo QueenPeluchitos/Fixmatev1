@@ -97,10 +97,10 @@ const Landing = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center text-purple-600 mb-2">
+      <h1 className="text-4xl font-bold text-center text-sky-900 mb-2">
         Contrata con confianza
       </h1>
-      <h2 className="text-4xl font-bold text-center text-purple-600 mb-8">
+      <h2 className="text-4xl font-bold text-center text-sky-900 mb-8">
         desde casa
       </h2>
 

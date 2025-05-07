@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Star } from 'lucide-react';
 
-export default function ServiceReview() {
+export default function ReseñaUsuario() {
   const [reviewText, setReviewText] = useState('');
   const [ratings, setRatings] = useState({
     punctuality: 2,

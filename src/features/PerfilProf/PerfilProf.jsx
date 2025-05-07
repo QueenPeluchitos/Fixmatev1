@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pencil, Star } from 'lucide-react';
 
-export default function ServiciosProfesionales() {
+export default function PerfilProf() {
   const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('4430000000');
   const [direccion, setDireccion] = useState('');

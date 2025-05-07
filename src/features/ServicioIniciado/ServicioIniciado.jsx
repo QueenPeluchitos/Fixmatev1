@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function ServiceDetails() {
+export default function ServicioIniado() {
   const [serviceStarted, setServiceStarted] = useState(false);
 
   return (

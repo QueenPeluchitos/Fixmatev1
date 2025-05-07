@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Camera, Upload } from 'lucide-react';
 
-export default function JobApplicationForm() {
+export default function RegistroProf() {
   const [photo, setPhoto] = useState(null);
   
   const handlePhotoChange = (e) => {

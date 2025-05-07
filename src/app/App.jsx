@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types';
-//import Header from '../common/components/layouts/Header';
-//import Landing from '../features/landing/Landing';
-//import ImgC from '../features/landing/components/ImgC';
-//import Footer from '../common/components/layouts/Footer';
-//import Login from '../features/auth/Login';
+import Sidebar from '../common/components/layouts/Sidebar';
 const App = ({ children }) => (
   <div className="min-h-screen flex flex-col">
-    <main className="flex-grow">
-      {children}
-    </main>
+    <div className="flex flex-1">
+      {/* Sidebar */}
+      <Sidebar />
+      {/* Main Content */}
+      <main className="flex-1 overflow-x-hidden p-4">
+        {children}
+      </main>
+    </div>
+    {/* Footer */}
+    <Footer />
   </div>
 );
 

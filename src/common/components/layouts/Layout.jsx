@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
+import Popup from './Popup';
 
 const Layout = () => {
   return (
@@ -15,11 +16,16 @@ const Layout = () => {
         <main className="flex-grow p-4 overflow-y-auto">
           <Outlet />
         </main>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+          <Popup />
+        </div>
       </div>
 
       {/* Footer fuera del scroll principal */}
       <Footer />
     </div>
+
+
   );
 };
 

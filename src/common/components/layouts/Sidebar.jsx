@@ -52,16 +52,6 @@ export default function Sidebar() {
         ))}
       </div>
 
-      {/* Call to Action */}
-      {isHovered && (
-        <div className="bg-gradient-to-br from-blue-200 to-blue-600 text-center rounded-xl p-4 mb-4">
-          <p className="text-yellow-100 text-sm mb-2">¿Quieres ser parte de nuestra empresa?</p>
-          <button className="bg-yellow-400 text-blue-900 font-bold py-1 px-3 rounded-full hover:bg-yellow-500 text-sm">
-            Regístrate ahora
-          </button>
-        </div>
-      )}
-
       {/* Perfil */}
       <div className="flex items-center gap-2 px-1 mt-4">
         <img

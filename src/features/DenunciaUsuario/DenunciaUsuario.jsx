@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function ServiceDetails() {
+export default function DenunciaUsuario() {
   const [selectedIssues, setSelectedIssues] = useState([]);
   const [comments, setComments] = useState('');
   

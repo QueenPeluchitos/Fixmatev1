@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pencil, Star } from 'lucide-react';
 
-export default function ServiceListing() {
+export default function ServicioProf() {
   const [services, setServices] = useState([
     {
       id: 1,

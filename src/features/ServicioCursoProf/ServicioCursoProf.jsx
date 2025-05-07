@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import { useState } from "react";
 
-export default function ServiceDetailsView() {
+export default function ServicioCursoProf() {
   // You would normally get this data from props or API
   const [serviceData] = useState({
     status: "terminado",

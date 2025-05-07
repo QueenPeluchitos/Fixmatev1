@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ProfessionalCard() {
+export default function CredencialProf() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="bg-blue-100 p-8 rounded-lg flex flex-col md:flex-row items-center justify-between">

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from '../features/landing/Landing';
 import Login from '../features/auth/Login';
+import Registro from '../features/auth/Registro';
 import AuthProvider from '../features/auth/context/AuthProvider';
 import Layout from '../common/components/layouts/Layout';
 /*import ChatDirecto from '../features/chatDirecto/ChatDirecto';*/
@@ -21,6 +22,7 @@ const AppRouter = () => (
   <BrowserRouter>
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/registro" element={<Registro />} />
       
       <Route element={<AuthProvider><Layout /></AuthProvider>}>
         <Route path="/landing" element={<Landing />} />

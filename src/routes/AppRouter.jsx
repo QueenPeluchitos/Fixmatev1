@@ -3,7 +3,7 @@ import Landing from '../features/landing/Landing';
 import Login from '../features/auth/Login';
 import AuthProvider from '../features/auth/context/AuthProvider';
 import Layout from '../common/components/layouts/Layout';
-import ChatDirecto from '../features/chatDirecto/ChatDirecto';
+/*import ChatDirecto from '../features/chatDirecto/ChatDirecto';*/
 import CitaUsuario from '../features/citaUsuario/CitaUsuario';
 import CredencialProf from '../features/credencialProf/CredencialProf';
 import DenunciaUsuario from '../features/denunciaUsuario/DenunciaUsuario';
@@ -25,7 +25,7 @@ const AppRouter = () => (
       <Route element={<AuthProvider><Layout /></AuthProvider>}>
         <Route path="/landing" element={<Landing />} />
         {/* otras rutas privadas aquí */}
-        <Route path="/chat-directo" element={<ChatDirecto />} />
+        {/*<Route path="/chat-directo" element={<ChatDirecto />} />*/}
         <Route path="/cita-usuario" element={<CitaUsuario />} />
         <Route path="/credencial" element={<CredencialProf />} />
         <Route path="/denucia" element={<DenunciaUsuario />} />  
@@ -34,7 +34,6 @@ const AppRouter = () => (
         <Route path="/registro-profesionista" element={<RegistroProf />} />
         <Route path="/reseña" element={<ResenaUsuario />} />
         <Route path="/servicio-en-curso-profesionista" element={<ServicioCursoProf />} />
-        <Route path="/servicio-usuario" element={<ServicioUsuario />} />
         <Route path="/servicio-pendiente" element={<ServicioPendiente />} />
         <Route path="/servicio-profesionista" element={<ServicioProf />} />
         <Route path="/servicio-usuario" element={<ServicioUsuario />} />

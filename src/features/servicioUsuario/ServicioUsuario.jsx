@@ -1,4 +1,3 @@
-@ -0,0 +1,141 @@
 import React from 'react';
 
 export default function UserProfile() {

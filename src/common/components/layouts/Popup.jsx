@@ -5,29 +5,35 @@ const Popup = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {/* Icono o trigger */}
+    <div className="fixed bottom-6 right-6 z-50">
       <div
-        className="bg-indigo-800 rounded-full p-3 cursor-pointer shadow-md"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        className={`relative bg-gradient-to-br from-indigo-700 to-indigo-900 text-yellow-300 shadow-2xl backdrop-blur-md cursor-pointer overflow-hidden
+        flex items-center justify-center px-6
+        transition-all duration-700 ease-in-out
+        ${isHovered ? "w-80 h-48 rounded-3xl" : "w-16 h-16 rounded-full"}`}
       >
-        <AlertTriangle className="text-yellow-400" />
-      </div>
+        {/* Icono visible solo cuando está cerrado */}
+        {!isHovered && (
+          <AlertTriangle
+            className="absolute text-yellow-400 transition-opacity duration-500"
+            size={28}
+          />
+        )}
 
-      {/* Popup */}
-      {isHovered && (
-        <div
-          className="mt-2 w-64 p-4 rounded-xl bg-indigo-800 text-center text-yellow-400 shadow-lg transition-all duration-300"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <p className="font-semibold mb-3">¿Quieres ser parte de nuestra empresa?</p>
-          <button className="bg-yellow-400 text-indigo-800 font-semibold py-2 px-4 rounded-full hover:bg-yellow-500 transition">
-            Regístrate ahora
-          </button>
-        </div>
-      )}
+        {/* Contenido visible solo cuando está abierto */}
+        {isHovered && (
+          <div className="text-center w-full opacity-100 transition-opacity duration-700">
+            <p className="text-md font-medium mb-3 leading-snug">
+              ¿Quieres formar parte de nuestro equipo?
+            </p>
+            <button className="bg-yellow-400 text-indigo-900 font-semibold py-2 px-4 rounded-full shadow hover:bg-yellow-500 transition duration-300">
+              ¡Regístrate ahora!
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

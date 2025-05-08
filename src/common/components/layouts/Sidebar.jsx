@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Home,
   PlusCircle,
@@ -7,10 +8,12 @@ import {
   LifeBuoy,
   Wrench,
   ChevronDown,
+  LogOut,
+  User,
 } from 'lucide-react';
 
 const menuItems = [
-  { label: 'Inicio', icon: <Home size={20} /> },
+  { label: 'Inicio', icon: <Home size={20} />, path: '/landing' },
   { label: 'Crear Servicio', icon: <PlusCircle size={20} />, highlighted: true },
   { label: 'Nuestros Servicios', icon: <Heart size={20} /> },
   { label: 'Rango de precios', icon: <BadgeDollarSign size={20} /> },
@@ -20,6 +23,22 @@ const menuItems = [
 
 export default function Sidebar() {
   const [isHovered, setIsHovered] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setShowDropdown(false);
+    navigate('/login');
+  };
+
+  const handleGoToProfile = () => {
+    setShowDropdown(false);
+    navigate('/perfil-usuario');
+  };
+
+  const handleNavigation = (path) => {
+    if (path) navigate(path);
+  };
 
   return (
     <div
@@ -27,7 +46,10 @@ export default function Sidebar() {
         isHovered ? 'w-64' : 'w-20'
       }`}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setShowDropdown(false);
+      }}
     >
       {/* Logo */}
       <div className="flex items-center gap-2 px-1 mb-6">
@@ -45,6 +67,7 @@ export default function Sidebar() {
                 ? 'bg-yellow-400 text-white hover:bg-yellow-500'
                 : 'text-yellow-600 hover:bg-yellow-200'
             }`}
+            onClick={() => handleNavigation(item.path)}
           >
             {item.icon}
             {isHovered && <span className="text-sm">{item.label}</span>}
@@ -53,20 +76,45 @@ export default function Sidebar() {
       </div>
 
       {/* Perfil */}
-      <div className="flex items-center gap-2 px-1 mt-4">
-        <img
-          src="/avatar.jpg"
-          alt="Usuario"
-          className="w-10 h-10 rounded-full border-2 border-yellow-500"
-        />
-        {isHovered && (
-          <>
-            <div>
-              <p className="text-sm font-semibold text-gray-800">Usuario</p>
-              <p className="text-xs text-gray-500">Project Manager</p>
+      <div className="relative px-1 mt-4">
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => setShowDropdown((prev) => !prev)}
+        >
+          <img
+            src="/avatar.jpg"
+            alt="Usuario"
+            className="w-10 h-10 rounded-full border-2 border-yellow-500"
+          />
+          {isHovered && (
+            <>
+              <div>
+                <p className="text-sm font-semibold text-gray-800">Usuario</p>
+                <p className="text-xs text-gray-500">Project Manager</p>
+              </div>
+              <ChevronDown className="ml-auto text-gray-500" size={16} />
+            </>
+          )}
+        </div>
+
+        {/* Dropdown */}
+        {isHovered && showDropdown && (
+          <div className="absolute bottom-14 left-0 bg-white shadow-lg rounded-md p-2 w-48 z-10 border border-gray-200">
+            <div
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded cursor-pointer"
+              onClick={handleGoToProfile}
+            >
+              <User size={16} />
+              <span className="text-sm">Perfil</span>
             </div>
-            <ChevronDown className="ml-auto text-gray-500" size={16} />
-          </>
+            <div
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded cursor-pointer"
+              onClick={handleLogout}
+            >
+              <LogOut size={16} />
+              <span className="text-sm">Cerrar sesión</span>
+            </div>
+          </div>
         )}
       </div>
     </div>

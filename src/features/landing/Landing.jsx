@@ -133,10 +133,10 @@ const Landing = () => {
         {secondaryCategories.map((category, index) => (
           <button
             key={index}
-            className={`px-6 py-2 rounded-full text-sm ${
+            className={`px-6 py-2 rounded-full text-sm transition-colors duration-200 ${
               category.active
-                ? "bg-blue-500 text-white"
-                : "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                ? "bg-[#9BA8D9] text-white"
+                : "bg-[#9BA8D9] text-white hover:bg-[#8193d1]"
             }`}
           >
             {category.name}

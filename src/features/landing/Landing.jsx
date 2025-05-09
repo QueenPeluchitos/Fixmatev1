@@ -138,8 +138,13 @@ const Landing = () => {
             key={index}
             className={`px-6 py-2 rounded-full text-sm transition-colors duration-200 ${
               category.active
+
                 ? "bg-[#535a75] text-white"
                 : "bg-[#9BA8D9] text-white hover:bg-[#606d9c]"
+
+                ? "bg-[#9BA8D9] text-white"
+                : "bg-[#9BA8D9] text-white hover:bg-[#8193d1]"
+
             }`}
           >
             {category.name}

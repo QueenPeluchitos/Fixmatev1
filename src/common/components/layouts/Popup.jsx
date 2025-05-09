@@ -34,6 +34,9 @@ const Popup = () => {
                 ¡Regístrate ahora!
               </button>
             </Link>
+            <button className="bg-yellow-400 text-indigo-900 font-semibold py-2 px-4 rounded-full shadow hover:bg-yellow-500 transition duration-300">
+              ¡Regístrate ahora!
+            </button>
           </div>
         )}
       </div>

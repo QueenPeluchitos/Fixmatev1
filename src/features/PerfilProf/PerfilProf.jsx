@@ -32,7 +32,7 @@ export default function PerfilProf() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden max-w-6xl mx-auto">
+    <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-md overflow-hidden max-w-6xl mx-auto my-20">
       {/* Panel de perfil izquierdo */}
       <div className="w-full md:w-1/3 p-8 flex flex-col items-center">
         <div className="relative flex flex-col items-center">

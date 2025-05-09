@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Camera, Upload } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';  // Usamos useNavigate en lugar de useHistory
 
 export default function RegistroProf() {
   const [photo, setPhoto] = useState(null);
@@ -8,6 +9,7 @@ export default function RegistroProf() {
   const [capturedImage, setCapturedImage] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const navigate = useNavigate();  // Usamos useNavigate para redirigir
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -54,8 +56,15 @@ export default function RegistroProf() {
     }
   };
 
+  const handleSubmit = () => {
+    // Simula un envío de documentos
+    alert('Documentos enviados correctamente.');
+    // Redirige a /landing después de la alerta
+    navigate('/landing');
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm my-10">
       <div className="text-center mb-10">
         <h1 className="text-3xl font-semibold text-gray-500 mb-2">¿DESEAS TRABAJAR</h1>
         <h1 className="text-3xl font-semibold text-gray-500 mb-4">CON NOSOTROS?</h1>
@@ -94,32 +103,36 @@ export default function RegistroProf() {
             'curp',
             'comprobanteDomicilio',
           ].map((key, i) => (
-            <div key={i} className="flex justify-between items-center">
-              <span className="text-gray-600 capitalize">
-                {key.replace(/([A-Z])/g, ' $1').replace(/^\w/, c => c.toUpperCase())}
-              </span>
-              <div>
+            <div key={i} className="flex flex-col space-y-1">
+              <div className="flex justify-between items-cente">
+                <span className="text-gray-600 capitalize text-sm">
+                  {key.replace(/([A-Z])/g, ' $1').replace(/^\w/, c => c.toUpperCase())}
+                </span>
+                <button
+                  className="border rounded p-2 text-gray-400 left-0"
+                  onClick={() => document.getElementById(`file-${key}`).click()}
+                >
+                  <Upload size={20} />
+                </button>
                 <input
                   type="file"
                   id={`file-${key}`}
                   className="hidden"
                   onChange={(e) => handleFileUpload(e, key)}
                 />
-                <button
-                  className="border rounded p-2 text-gray-400"
-                  onClick={() => document.getElementById(`file-${key}`).click()}
-                >
-                  <Upload size={20} />
-                </button>
               </div>
+              {/* Mostrar el nombre del archivo si está cargado */}
+              {documents[key] && (
+                <p className="text-sm text-green-500 pl-8 mt-1">{`Archivo cargado: ${documents[key]}`}</p>
+              )}
             </div>
           ))}
 
           {/* Identificación biométrica */}
           <div className="flex justify-between items-center">
             <div>
-              <span className="text-gray-600">Identificación biométrica</span>
-              <p className="text-sm text-gray-400">(Se encenderá la cámara)</p>
+              <span className="text-gray-600 text-sm">Identificación biométrica</span>
+              <p className="text-xs text-gray-400">(Se encenderá la cámara)</p>
             </div>
             <button className="border rounded p-2 bg-gray-100" onClick={handleCameraClick}>
               <Camera size={20} />
@@ -151,7 +164,10 @@ export default function RegistroProf() {
 
       {/* Botón enviar */}
       <div className="mt-10 text-center">
-        <button className="bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-3 rounded-lg text-lg shadow">
+        <button
+          onClick={handleSubmit}  // Al hacer clic en enviar, se ejecuta el handleSubmit
+          className="bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-3 rounded-lg text-lg shadow"
+        >
           Enviar
         </button>
       </div>

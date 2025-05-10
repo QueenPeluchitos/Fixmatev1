@@ -1,137 +1,181 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-export default function UserProfile() {
+export default function ServiceDetailsView() {
+  const [serviceCompleted, setServiceCompleted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
+  const videoRef = useRef(null);
+  const navigate = useNavigate();
+
+  const serviceCode = 'SERV-' + Math.floor(100000 + Math.random() * 900000);
+  const userName = 'Juan Pérez';
+  const serviceHour = new Date().toLocaleTimeString();
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      }
+    } catch (error) {
+      console.error('Error al acceder a la cámara:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (showCamera) {
+      startCamera();
+    } else {
+      // Detener cámara si se cierra
+      const stream = videoRef.current?.srcObject;
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    }
+  }, [showCamera]);
+
+  const handleCompleteService = () => {
+    setServiceCompleted(true);
+    setShowModal(true);
+  };
+
+  const handleEmergencyClick = () => {
+    const subject = encodeURIComponent('Emergencia durante el servicio');
+    const body = encodeURIComponent(
+      `Se ha reportado una emergencia.\n\nDatos del servicio:\n- Hora: ${serviceHour}\n- Enlace: ${window.location.origin}/credencial\n\nContacte a ${userName}`
+    );
+    window.location.href = `mailto:un.peluchito@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Left Column - User Info */}
-        <div className="flex flex-col items-center">
-          {/* Profile Image */}
-          <div className="w-48 h-48 rounded-full overflow-hidden bg-white mb-4">
-            <img 
-              src="/api/placeholder/400/400" 
-              alt="User profile" 
-              className="w-full h-full object-cover"
-            />
-          </div>
-          
-          {/* User Info Section */}
-          <h2 className="text-purple-700 text-xl font-medium mb-4">Usuario</h2>
-          
-          <div className="w-full max-w-md space-y-3">
-            <div className="flex justify-between items-center text-yellow-500">
-              <span className="font-medium">Nombre</span>
-              <button className="text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </button>
+    <div className="relative max-w-7xl mx-auto p-8">
+      {/* Modal de cámara */}
+      {showCamera && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-6 space-y-6">
+          <video ref={videoRef} className="w-full max-w-sm rounded-lg border-4 border-white" />
+          <button
+            onClick={() => {
+              setShowCamera(false);
+              navigate('/credencial');
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md"
+          >
+            Confirmar escaneo
+          </button>
+          <button
+            onClick={() => setShowCamera(false)}
+            className="text-white underline mt-2"
+          >
+            Cancelar
+          </button>
+        </div>
+      )}
+
+      {/* Modal de servicio terminado */}
+      {showModal && (
+        <div className="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md text-center space-y-4">
+            <h2 className="text-xl font-semibold text-green-600">¡Servicio completado!</h2>
+            <p className="text-gray-700">Tu código de confirmación es:</p>
+            <div className="text-2xl font-mono bg-gray-100 px-4 py-2 rounded-md border border-gray-300">
+              {serviceCode}
             </div>
-            
-            <div className="flex justify-between items-center text-yellow-500">
-              <span className="font-medium">4430000000</span>
-              <button className="text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="flex justify-between items-center text-yellow-500">
-              <span className="font-medium">Dirección</span>
-              <button className="text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="flex justify-between items-center text-yellow-500">
-              <span className="font-medium">Correo electrónico</span>
-              <button className="text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="flex justify-between items-center text-yellow-500">
-              <span className="font-medium">Contacto de emergenciar</span>
-              <button className="text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                </svg>
-              </button>
-            </div>
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
+            >
+              Listo
+            </button>
           </div>
         </div>
-        
-        {/* Right Column - Services */}
-        <div className="space-y-8">
-          {/* Service History */}
-          <div className="bg-blue-100 rounded-lg p-6">
-            <h2 className="text-purple-700 text-xl font-medium mb-4 text-center">Historial de servicios</h2>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Servicio</span>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">$00.00</span>
-                  <span className="bg-yellow-300 text-yellow-800 text-xs px-2 py-1 rounded">Pendiente</span>
-                </div>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Servicio</span>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">$00.00</span>
-                  <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded">Completada</span>
-                </div>
-              </div>
+      )}
+
+      <div className={`${showModal ? 'pointer-events-none blur-sm' : ''}`}>
+        <div className="flex flex-col md:flex-row gap-10">
+          {/* Imagen y botones */}
+          <div className="flex-1">
+            <div className="mb-8 rounded-lg overflow-hidden">
+              <img
+                src="https://i.ytimg.com/vi/Zc1IMFJN7d8/sddefault.jpg"
+                alt="Service workshop"
+                className="w-full h-96 object-cover"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <button
+                onClick={() => setShowCamera(true)}
+                className="bg-green-500 hover:bg-green-600 text-white font-medium py-4 px-6 rounded-md text-center"
+              >
+                Inicio de servicio
+              </button>
+
+              <button
+                onClick={handleEmergencyClick}
+                className="bg-red-600 hover:bg-red-700 text-white font-medium py-4 px-6 rounded-md flex items-center justify-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+                </svg>
+                EMERGENCIA
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <Link
+                to="/denucia"
+                className="bg-orange-400 hover:bg-orange-500 text-white font-medium py-4 px-6 rounded-md text-center"
+              >
+                Denunciar servicio
+              </Link>
+
+              <button
+                onClick={handleCompleteService}
+                className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md text-center"
+              >
+                Servicio terminado
+              </button>
             </div>
           </div>
-          
-          {/* Favorite Services */}
-          <div>
-            <h2 className="text-purple-700 text-xl font-medium mb-4 text-center">Servicios favoritos</h2>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {/* Service Card 1 */}
-              <div className="border rounded-lg overflow-hidden bg-white">
-                <div className="relative">
-                  <img 
-                    src="/api/placeholder/300/200" 
-                    alt="Locksmith service" 
-                    className="w-full h-32 object-cover"
-                  />
-                  <div className="absolute bottom-1 left-1 flex">
-                    <span className="text-yellow-500">★★★</span>
-                  </div>
-                  <div className="absolute bottom-1 right-1 bg-white rounded-full p-1">
-                    <div className="w-6 h-6 rounded-full bg-gray-200"></div>
-                  </div>
+
+          {/* Detalles del servicio */}
+          <div className="flex-1">
+            <div className="bg-blue-100 rounded-xl p-8 h-full flex flex-col">
+              <h2 className="text-purple-700 text-2xl font-semibold mb-8 text-center">Detalles del servicio</h2>
+
+              <div className="space-y-8 flex-grow">
+                <div className="flex justify-between text-lg">
+                  <span className="text-gray-600">Costo</span>
+                  <span className="font-medium">$00.00</span>
                 </div>
-                <div className="p-2 text-center">
-                  <p className="text-yellow-500 font-medium">Servicio de cerrajero</p>
+
+                <div>
+                  <span className="text-gray-600">Incluye</span>
+                  <ul className="mt-2 space-y-2 text-base text-blue-900">
+                    <li>- Fursuit completo</li>
+                    <li>- Tela de alta calidad</li>
+                    <li>- Patrones a la medida</li>
+                  </ul>
                 </div>
-              </div>
-              
-              {/* Service Card 2 */}
-              <div className="border rounded-lg overflow-hidden bg-white">
-                <div className="relative">
-                  <img 
-                    src="/api/placeholder/300/200" 
-                    alt="Cleaning service" 
-                    className="w-full h-32 object-cover"
-                  />
-                  <div className="absolute bottom-1 right-1 bg-white rounded-full p-1">
-                    <div className="w-6 h-6 rounded-full bg-gray-200"></div>
-                  </div>
-                </div>
-                <div className="p-2 text-center">
-                  <p className="text-yellow-500 font-medium">Servicio de limpieza</p>
+
+                <div className="flex justify-between text-lg">
+                  <span className="text-gray-600">Horario del servicio</span>
+                  <span className="font-medium">{serviceHour}</span>
                 </div>
               </div>
+
+              {serviceCompleted && (
+                <div className="mt-10">
+                  <Link
+                    to="/reseña"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md w-full block text-center"
+                  >
+                    Reseña
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

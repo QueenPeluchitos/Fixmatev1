@@ -10,13 +10,24 @@ import {
   ChevronDown,
   LogOut,
   User,
+  ChevronRight,
 } from 'lucide-react';
+
+const priceRanges = [
+  '$10 - $50',
+  '$51 - $200',
+  '$201 - $500',
+  '$501 - $1000',
+  '$1001 - $5000',
+  '$5001 - $10000',
+  '$10001 - $20000',
+];
 
 const menuItems = [
   { label: 'Inicio', icon: <Home size={20} />, path: '/landing' },
-  { label: 'Crear Servicio', icon: <PlusCircle size={20} />, highlighted: true },
+  { label: 'Crear Servicio', icon: <PlusCircle size={20} />, highlighted: true, path: '/crear-servicio' },
   { label: 'Nuestros Servicios', icon: <Heart size={20} /> },
-  { label: 'Rango de precios', icon: <BadgeDollarSign size={20} /> },
+  { label: 'Rango de precios', icon: <BadgeDollarSign size={20} />, hasSubmenu: true },
   { label: 'Soporte', icon: <LifeBuoy size={20} /> },
   { label: 'Ayuda', icon: <Wrench size={20} /> },
 ];
@@ -24,6 +35,7 @@ const menuItems = [
 export default function Sidebar() {
   const [isHovered, setIsHovered] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [openSubmenuIndex, setOpenSubmenuIndex] = useState(null);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -49,6 +61,7 @@ export default function Sidebar() {
       onMouseLeave={() => {
         setIsHovered(false);
         setShowDropdown(false);
+        setOpenSubmenuIndex(null);
       }}
     >
       {/* Logo */}
@@ -60,17 +73,42 @@ export default function Sidebar() {
       {/* Menu */}
       <div className="flex flex-col gap-3 flex-1">
         {menuItems.map((item, index) => (
-          <div
-            key={index}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 cursor-pointer ${
-              item.highlighted
-                ? 'bg-yellow-400 text-white hover:bg-yellow-500'
-                : 'text-yellow-600 hover:bg-yellow-200'
-            }`}
-            onClick={() => handleNavigation(item.path)}
-          >
-            {item.icon}
-            {isHovered && <span className="text-sm">{item.label}</span>}
+          <div key={index}>
+            <div
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 cursor-pointer ${
+                item.highlighted
+                  ? 'bg-yellow-400 text-white hover:bg-yellow-500'
+                  : 'text-yellow-600 hover:bg-yellow-200'
+              }`}
+              onClick={() =>
+                item.hasSubmenu
+                  ? setOpenSubmenuIndex(openSubmenuIndex === index ? null : index)
+                  : handleNavigation(item.path)
+              }
+            >
+              {item.icon}
+              {isHovered && (
+                <>
+                  <span className="text-sm">{item.label}</span>
+                  {item.hasSubmenu && <ChevronRight size={16} className="ml-auto" />}
+                </>
+              )}
+            </div>
+
+            {/* Submenú de rangos de precio */}
+            {item.hasSubmenu && openSubmenuIndex === index && isHovered && (
+              <div className="ml-8 mt-1 flex flex-col gap-1">
+                {priceRanges.map((range, i) => (
+                  <div
+                    key={i}
+                    className="text-sm text-yellow-700 hover:underline cursor-pointer"
+                    onClick={() => alert(`Seleccionaste: ${range}`)}
+                  >
+                    {range}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

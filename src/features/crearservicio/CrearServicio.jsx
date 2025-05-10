@@ -1,25 +1,21 @@
 import { useState, useRef } from 'react';
 import { X } from 'lucide-react';
 
-export default function ServicioProf() {
+export default function ServicioProfVacio() {
   const [services, setServices] = useState([
     {
       id: 1,
-      title: 'Servicio de cerrajero',
-      description: 'Ofrezco mi servicio para abrir cerraduras con experiencia en...',
-      cost: '$00.00',
+      title: '',
+      description: '',
+      cost: '',
       image: '/api/placeholder/200/180',
-      tags: ['Cerrajero', 'Servicio rápido']
+      tags: []
     },
     {
       id: 2,
-      title: 'Servicio de satrería',
-      description: 'Ofrezco mi servicio para hacer fursuits con experiencia en bla bla bla...',
-      includes: [
-        'Fursuit completo',
-        'Tela de alta calida',
-        'Patrones a la medida'
-      ]
+      title: '',
+      description: '',
+      includes: []
     }
   ]);
 
@@ -90,11 +86,13 @@ export default function ServicioProf() {
                 value={services[0].title}
                 onChange={(e) => handleEditField(1, 'title', e.target.value)}
                 className="text-yellow-500 font-bold text-xl w-full"
+                placeholder="Título del servicio"
               />
               <textarea
                 value={services[0].description}
                 onChange={(e) => handleEditField(1, 'description', e.target.value)}
                 className="text-gray-600 text-base w-full"
+                placeholder="Descripción del servicio"
               />
               <div>
                 <label className="text-blue-500 text-sm">Costo del servicio</label>
@@ -103,6 +101,7 @@ export default function ServicioProf() {
                   value={services[0].cost}
                   onChange={(e) => handleEditField(1, 'cost', e.target.value)}
                   className="text-blue-500 text-lg w-full"
+                  placeholder="Costo"
                 />
               </div>
               <div className="flex flex-wrap gap-2 items-center">
@@ -137,19 +136,22 @@ export default function ServicioProf() {
             value={services[1].title}
             onChange={(e) => handleEditField(2, 'title', e.target.value)}
             className="text-yellow-500 font-bold text-2xl w-full"
+            placeholder="Título del servicio"
           />
           <textarea
             value={services[1].description}
             onChange={(e) => handleEditField(2, 'description', e.target.value)}
             className="text-gray-600 text-base w-full"
+            placeholder="Descripción del servicio"
           />
           <div className="bg-blue-100 rounded-xl p-6 relative">
             <h3 className="text-blue-700 font-medium text-lg mb-2">Incluye</h3>
             <textarea
-              value={services[1].includes.join('\n')}
+              value={services[1].includes?.join('\n')}
               onChange={(e) => handleEditField(2, 'includes', e.target.value.split('\n'))}
               className="text-blue-800 text-sm w-full"
               rows={6}
+              placeholder="Incluye los elementos del servicio"
             />
           </div>
         </div>

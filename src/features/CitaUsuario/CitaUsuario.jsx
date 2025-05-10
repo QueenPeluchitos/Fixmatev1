@@ -1,289 +1,192 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function CitaUsuario() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [availabilityStatus, setAvailabilityStatus] = useState('disponible');
+  const [confirmed, setConfirmed] = useState(false);
 
-  // Generar el array de días del mes actual
+  const availableDates = [5, 10, 15, 20, 25];
+
   const generateCalendarDays = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
-    
-    // Primer día del mes
     const firstDayOfMonth = new Date(year, month, 1);
-    const startingDayOfWeek = firstDayOfMonth.getDay(); // 0 = Domingo
-    
-    // Último día del mes
-    const lastDayOfMonth = new Date(year, month + 1, 0);
-    const totalDays = lastDayOfMonth.getDate();
-    
-    // Días del mes anterior para completar la primera semana
-    const prevMonthLastDay = new Date(year, month, 0).getDate();
-    
+    const startingDayOfWeek = (firstDayOfMonth.getDay() + 6) % 7;
+    const totalDays = new Date(year, month + 1, 0).getDate();
     const days = [];
-    
-    // Días del mes anterior
-    for (let i = startingDayOfWeek - 1; i >= 0; i--) {
-      days.push({
-        day: prevMonthLastDay - i,
-        isCurrentMonth: false,
-        date: new Date(year, month - 1, prevMonthLastDay - i)
-      });
+
+    for (let i = 0; i < startingDayOfWeek; i++) {
+      days.push({ day: null });
     }
-    
-    // Días del mes actual
+
     for (let i = 1; i <= totalDays; i++) {
       days.push({
         day: i,
-        isCurrentMonth: true,
-        date: new Date(year, month, i)
+        isAvailable: availableDates.includes(i),
+        date: new Date(year, month, i),
       });
     }
-    
-    // Días del mes siguiente para completar la última semana
-    const remainingDays = 42 - days.length; // 6 semanas x 7 días = 42 celdas
-    for (let i = 1; i <= remainingDays; i++) {
-      days.push({
-        day: i,
-        isCurrentMonth: false,
-        date: new Date(year, month + 1, i)
-      });
-    }
-    
+
     return days;
   };
 
   const days = generateCalendarDays();
-  
-  // Avanzar al siguiente mes
+
   const nextMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
   };
-  
-  // Retroceder al mes anterior
+
   const prevMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
   };
-  
-  // Verificar si un día es el seleccionado
-  const isSelected = (date) => {
-    return date.toDateString() === selectedDate.toDateString();
-  };
-  
-  // Verificar si un día es hoy
+
   const isToday = (date) => {
     const today = new Date();
-    return date.toDateString() === today.toDateString();
+    return date?.toDateString() === today.toDateString();
   };
 
-  // Obtener nombre del mes y año
-  const getMonthYearString = () => {
-    const options = { month: 'long', year: 'numeric' };
-    return currentMonth.toLocaleDateString('es-ES', options);
+  const isSelected = (date) => {
+    return date?.toDateString() === selectedDate?.toDateString();
   };
 
-  // Array de horas disponibles
-  const timeSlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
+  const timeSlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+
+  if (confirmed) {
+    return (
+      <div className="max-w-xl mx-auto p-6 text-center bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold text-green-600 mb-4">¡Cita confirmada!</h2>
+        <p className="text-gray-700 mb-2">Gracias por agendar tu servicio de plomería.</p>
+        <p className="text-gray-600">Fecha: <strong>{selectedDate.toLocaleDateString()}</strong></p>
+        <p className="text-gray-600">Hora: <strong>{selectedTime}</strong></p>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-      {/* Header con información del servicio */}
-      <div className="mb-8">
-        <div className="flex items-start">
-          <div className="w-1/3">
-            <img 
-              src="/api/placeholder/250/200" 
-              alt="Servicio de sastrería"
-              className="rounded-lg"
-            />
-            <div className="flex mt-1">
-              {[1, 2, 3].map((star) => (
-                <svg key={star} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                </svg>
-              ))}
-            </div>
-          </div>
-          
-          <div className="w-2/3 pl-6">
-            <h2 className="text-xl font-bold text-yellow-500">Servicio de sastrería</h2>
-            
-            <div className="mt-4 bg-blue-100 p-4 rounded-lg">
-              <h3 className="font-semibold text-blue-800">Incluye</h3>
-              <ul className="list-disc pl-5 text-blue-700">
-                <li>Fursuit completo</li>
-                <li>Tela de alta calida</li>
-                <li>Patrones a la medida</li>
-              </ul>
-            </div>
-            
-            <div className="mt-4 text-blue-400">
-              <p className="font-medium">Costo del servicio</p>
-              <p className="text-lg">$00.00</p>
-            </div>
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg space-y-8">
+      {/* Título Agendar cita */}
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-yellow-500">Agendar Cita</h1>
+      </div>
+
+      {/* Descripción del servicio */}
+      <div className="flex gap-6 items-center">
+        <img src="/api/placeholder/180/140" alt="Servicio" className="rounded-lg w-48 h-36 object-cover" />
+        <div className="space-y-3">
+          <h2 className="text-2xl font-semibold text-yellow-500">Servicio de plomería a domicilio</h2>
+          <p className="text-gray-600 text-base">
+            Ofrecemos reparación de fugas, instalación y mantenimiento de grifos, tuberías, WC, regaderas y sistemas hidráulicos completos. Nuestro servicio incluye revisión general del sistema, asesoría técnica y atención el mismo día en la comodidad de tu hogar.
+          </p>
+          <div>
+            <span className="text-blue-500 font-semibold">Costo: </span>
+            <span className="text-gray-800">$450 MXN</span>
           </div>
         </div>
       </div>
-      
-      {/* Calendario y selección de horarios */}
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Calendario */}
-        <div className="w-full md:w-2/3">
-          <div className="flex justify-between items-center mb-4">
-            <button 
-              onClick={prevMonth}
-              className="p-2 hover:bg-gray-100 rounded-full"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            
-            <h3 className="font-bold text-gray-700 capitalize">
-              {getMonthYearString()}
-            </h3>
-            
-            <button 
-              onClick={nextMonth}
-              className="p-2 hover:bg-gray-100 rounded-full"
-            >
-              <ChevronRight size={20} />
-            </button>
-          </div>
-          
-          {/* Días de la semana */}
-          <div className="grid grid-cols-7 gap-1 text-center mb-2">
-            {['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((day) => (
-              <div key={day} className="text-xs font-medium text-gray-500">
-                {day}
-              </div>
+
+      {/* Profesional */}
+      <div className="flex gap-4 items-center">
+        <img src="/api/placeholder/100/100" alt="Profesional" className="rounded-full w-16 h-16 object-cover" />
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold text-gray-700">Juan Pérez</h3>
+          <p className="text-sm text-gray-500">Plomero certificado con más de 10 años de experiencia.</p>
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, index) => (
+              <svg key={index} className="w-5 h-5 text-yellow-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" stroke="currentColor">
+                <path d="M10 15l-3.09 1.636 1.182-3.869-2.91-2.31h3.596l1.182-3.869 1.182 3.869h3.595l-2.91 2.31 1.181 3.869z" />
+              </svg>
             ))}
           </div>
-          
-          {/* Días del mes */}
-          <div className="grid grid-cols-7 gap-1">
-            {days.map((day, index) => (
+        </div>
+      </div>
+
+      {/* Calendario */}
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <button onClick={prevMonth} className="text-gray-500 hover:text-gray-700"><ChevronLeft /></button>
+          <h3 className="font-bold capitalize text-gray-700">
+            {currentMonth.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
+          </h3>
+          <button onClick={nextMonth} className="text-gray-500 hover:text-gray-700"><ChevronRight /></button>
+        </div>
+
+        <div className="grid grid-cols-7 text-center text-sm font-semibold text-gray-500 mb-2">
+          {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((day) => (
+            <div key={day}>{day}</div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-7 gap-2 mb-6">
+          {days.map((d, i) => (
+            <div key={i}>
+              {d.day ? (
+                <button
+                  onClick={() => d.isAvailable && setSelectedDate(d.date)}
+                  className={`w-full py-2 rounded-lg text-sm font-medium
+                    ${isToday(d.date) ? 'bg-blue-100 text-blue-600' : ''}
+                    ${isSelected(d.date) ? 'bg-yellow-500 text-white' : ''}
+                    ${d.isAvailable && !isSelected(d.date) ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : ''}
+                    ${!d.isAvailable ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : ''}`}
+                >
+                  {d.day}
+                </button>
+              ) : (
+                <div></div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Leyenda */}
+        <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-8">
+          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-yellow-500 rounded"></div> Seleccionado</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-yellow-100 rounded"></div> Disponible</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-blue-100 rounded"></div> Hoy</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-gray-200 rounded"></div> No disponible</div>
+        </div>
+      </div>
+
+      {/* Horarios disponibles */}
+      {selectedDate && (
+        <div className="mt-6">
+          <h4 className="font-semibold text-gray-700 mb-2">Selecciona un horario:</h4>
+          <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+            {timeSlots.map((slot) => (
               <button
-                key={index}
-                onClick={() => setSelectedDate(day.date)}
-                className={`
-                  py-2 rounded-md text-sm
-                  ${!day.isCurrentMonth ? 'text-gray-300' : ''}
-                  ${isToday(day.date) ? 'bg-blue-50 text-blue-600 font-bold' : ''}
-                  ${isSelected(day.date) && !isToday(day.date) ? 'bg-blue-500 text-white' : ''}
-                  ${!isSelected(day.date) && day.isCurrentMonth ? 'hover:bg-gray-100' : ''}
-                `}
+                key={slot}
+                onClick={() => setSelectedTime(slot)}
+                className={`py-2 text-sm rounded-md
+                  ${selectedTime === slot ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
               >
-                {day.day}
+                {slot}
               </button>
             ))}
           </div>
-          
-          {/* Accesos rápidos a fechas */}
-          <div className="mt-4 space-y-2">
-            <div className="flex justify-between items-center px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-              <span className="text-sm">Today</span>
-              <span className="text-xs text-gray-500">
-                {new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
-              </span>
-            </div>
-            <div className="flex justify-between items-center px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-              <span className="text-sm">Tomorrow</span>
-              <span className="text-xs text-gray-500">
-                {new Date(Date.now() + 86400000).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
-              </span>
-            </div>
-            <div className="flex justify-between items-center px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-              <span className="text-sm">Yesterday</span>
-              <span className="text-xs text-gray-500">
-                {new Date(Date.now() - 86400000).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}
-              </span>
-            </div>
-            <div className="flex justify-between items-center px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-              <span className="text-sm">This Week</span>
-            </div>
-            <div className="flex justify-between items-center px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-              <span className="text-sm">Next Week</span>
-            </div>
-            <div className="flex justify-between items-center px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-              <span className="text-sm">This Month</span>
-            </div>
-            <div className="flex justify-between items-center px-2 py-1 hover:bg-gray-100 rounded cursor-pointer">
-              <span className="text-sm">Last Month</span>
-            </div>
-          </div>
-          
-          {/* Selección de tiempo */}
-          <div className="mt-4">
-            <div className="flex justify-between items-center border-t pt-4">
-              <div className="flex items-center">
-                <button className="p-1 hover:bg-gray-100 rounded-full mr-2">
-                  <ChevronUp size={16} />
-                </button>
-                <span className="text-sm font-medium">9</span>
-                <button className="p-1 hover:bg-gray-100 rounded-full ml-2">
-                  <ChevronDown size={16} />
-                </button>
-              </div>
-              <div className="text-lg">:</div>
-              <div className="flex items-center">
-                <button className="p-1 hover:bg-gray-100 rounded-full mr-2">
-                  <ChevronUp size={16} />
-                </button>
-                <span className="text-sm font-medium">30</span>
-                <button className="p-1 hover:bg-gray-100 rounded-full ml-2">
-                  <ChevronDown size={16} />
-                </button>
-              </div>
-              <div className="flex">
-                <button className={`px-3 py-1 text-xs rounded ${selectedTime === 'AM' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`} onClick={() => setSelectedTime('AM')}>AM</button>
-                <button className={`px-3 py-1 text-xs rounded ml-1 ${selectedTime === 'PM' ? 'bg-blue-500 text-white' : 'bg-gray-100'}`} onClick={() => setSelectedTime('PM')}>PM</button>
-              </div>
-            </div>
-          </div>
         </div>
-        
-        {/* Estado de disponibilidad */}
-        <div className="w-full md:w-1/3 space-y-2">
-          <button 
-            className={`w-full py-2 px-4 rounded-md text-center ${availabilityStatus === 'disponible' ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-700'}`}
-            onClick={() => setAvailabilityStatus('disponible')}
+      )}
+
+      {/* Confirmación */}
+      {selectedDate && selectedTime && (
+        <div className="mt-8 flex justify-end gap-4">
+          <button
+            className="px-4 py-2 border border-yellow-300 rounded-md hover:bg-yellow-200"
+            onClick={() => {
+              setSelectedDate(null);
+              setSelectedTime(null);
+            }}
           >
-            Disponible
+            Cancelar
           </button>
-          
-          <button 
-            className={`w-full py-2 px-4 rounded-md text-center ${availabilityStatus === 'sin-disponibilidad' ? 'bg-red-500 text-white' : 'bg-red-100 text-red-700'}`}
-            onClick={() => setAvailabilityStatus('sin-disponibilidad')}
+          <button
+            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+            onClick={() => setConfirmed(true)}
           >
-            Sin disponibilidad
+            Confirmar cita
           </button>
-          
-          <button 
-            className={`w-full py-2 px-4 rounded-md text-center ${availabilityStatus === 'sin-servicio' ? 'bg-orange-500 text-white' : 'bg-orange-100 text-orange-700'}`}
-            onClick={() => setAvailabilityStatus('sin-servicio')}
-          >
-            Día sin servicio
-          </button>
-          
-          <button 
-            className={`w-full py-2 px-4 rounded-md text-center ${availabilityStatus === 'sin-cita' ? 'bg-purple-500 text-white' : 'bg-purple-100 text-purple-700'}`}
-            onClick={() => setAvailabilityStatus('sin-cita')}
-          >
-            Día sin disponibilidad de cita
-          </button>
-          
-          <div className="pt-6 flex justify-between">
-            <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-              Clear
-            </button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-              Confirm
-            </button>
-          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

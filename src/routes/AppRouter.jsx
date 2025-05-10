@@ -6,6 +6,7 @@ import AuthProvider from '../features/auth/context/AuthProvider';
 import Layout from '../common/components/layouts/Layout';
 import ChatDirecto from '../features/chatDirecto/ChatDirecto';
 import CitaUsuario from '../features/citaUsuario/CitaUsuario';
+import CrearServicio from '../features/crearServicio/CrearServicio';
 import CredencialProf from '../features/credencialProf/CredencialProf';
 import DenunciaUsuario from '../features/denunciaUsuario/DenunciaUsuario';
 import PerfilProf from '../features/perfilProf/PerfilProf';
@@ -29,6 +30,7 @@ const AppRouter = () => (
         {/* otras rutas privadas aquí */}
         <Route path="/chat-directo" element={<ChatDirecto />} />
         <Route path="/cita-usuario" element={<CitaUsuario />} />
+        <Route path="/crear-servicio" element={<CrearServicio />} />
         <Route path="/credencial" element={<CredencialProf />} />
         <Route path="/denucia" element={<DenunciaUsuario />} />  
         <Route path="/perfil-profesionista" element={<PerfilProf />} />

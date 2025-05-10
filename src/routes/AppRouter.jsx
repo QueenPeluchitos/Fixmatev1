@@ -5,7 +5,7 @@ import Registro from '../features/auth/Registro';
 import AuthProvider from '../features/auth/context/AuthProvider';
 import Layout from '../common/components/layouts/Layout';
 import ChatDirecto from '../features/chatDirecto/ChatDirecto';
-import CitaUsuario from '../features/citaUsuario/CitaUsuario';
+import CitaUsuario from '../features/CitaUsuario/CitaUsuario';
 import CrearServicio from '../features/crearServicio/CrearServicio';
 import CredencialProf from '../features/credencialProf/CredencialProf';
 import DenunciaUsuario from '../features/denunciaUsuario/DenunciaUsuario';

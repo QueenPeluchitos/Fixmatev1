@@ -17,6 +17,9 @@ import ServicioCursoProf from '../features/servicioCursoProf/ServicioCursoProf';
 import ServicioPendiente from '../features/servicioPendiente/ServicioPendiente';
 import ServicioProf from '../features/servicioProf/ServicioProf';
 import ServicioUsuario from '../features/servicioUsuario/ServicioUsuario';
+import ServicioIniado from '../features/servicioIniciado/ServicioIniciado';
+import Faq from '../features/Faq/Faq';
+import Soporte from '../features/soporte/Soporte';
 
 
 const AppRouter = () => (
@@ -32,15 +35,18 @@ const AppRouter = () => (
         <Route path="/cita-usuario" element={<CitaUsuario />} />
         <Route path="/crear-servicio" element={<CrearServicio />} />
         <Route path="/credencial" element={<CredencialProf />} />
-        <Route path="/denucia" element={<DenunciaUsuario />} />  
+        <Route path="/denuncia" element={<DenunciaUsuario />} /> 
+        <Route path="/faq" element={<Faq />} /> 
         <Route path="/perfil-profesionista" element={<PerfilProf />} />
         <Route path="/perfil-usuario" element={<PerfilUsuario />} />
         <Route path="/registro-profesionista" element={<RegistroProf />} />
         <Route path="/reseña" element={<ResenaUsuario />} />
         <Route path="/servicio-en-curso-profesionista" element={<ServicioCursoProf />} />
+        <Route path="/servicio-iniciado" element={<ServicioIniado />} />
         <Route path="/servicio-pendiente" element={<ServicioPendiente />} />
         <Route path="/servicio-profesionista" element={<ServicioProf />} />
         <Route path="/servicio-usuario" element={<ServicioUsuario />} />
+        <Route path="/soporte" element={<Soporte />} />
       </Route>
 
       <Route path="*" element={<Login />} />

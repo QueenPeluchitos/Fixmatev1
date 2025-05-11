@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Pencil, Star } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 export default function PerfilProf() {
   const [nombre, setNombre] = useState('Juan Pérez');
@@ -184,9 +185,11 @@ export default function PerfilProf() {
                       <h3 className="font-medium text-yellow-500">Servicio {i + 1}</h3>
                     </div>
                   </div>
-                  <button className="text-yellow-500">
-                    <Pencil size={18} />
-                  </button>
+                  <Link to="/servicio-profesionista">
+                    <button className="text-yellow-500">
+                      <Pencil size={18} />
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

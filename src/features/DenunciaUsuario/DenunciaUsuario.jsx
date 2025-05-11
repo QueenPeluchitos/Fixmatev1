@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importamos el hook useNavigate
 
 export default function DenunciaUsuario() {
   const [selectedIssues, setSelectedIssues] = useState([]);
   const [comments, setComments] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const navigate = useNavigate(); // Usamos el hook useNavigate
 
   const issues = [
     { id: 1, label: 'Impuntualidad' },
@@ -57,9 +59,10 @@ export default function DenunciaUsuario() {
                 className="w-full h-64 object-cover rounded-xl"
               />
               <div className="absolute bottom-4 left-4 flex">
-                <span className="text-yellow-400 text-2xl">★</span>
-                <span className="text-yellow-400 text-2xl">★</span>
-                <span className="text-gray-300 text-2xl">★</span>
+                {/* 5 Estrellas */}
+                {[...Array(5)].map((_, index) => (
+                  <span key={index} className={`text-${index < 2 ? 'yellow' : 'gray'}-400 text-2xl`}>★</span>
+                ))}
               </div>
               <div className="absolute bottom-4 right-4">
                 <div className="bg-white rounded-full w-12 h-12 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
@@ -71,7 +74,10 @@ export default function DenunciaUsuario() {
                 </div>
               </div>
               <div className="absolute top-4 right-4">
-                <div className="text-orange-500 text-2xl">🔥</div>
+                {/* SVG Flame Icon con color amarillo */}
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-flame-icon lucide-flame text-yellow-400">
+                  <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+                </svg>
               </div>
             </div>
             
@@ -143,7 +149,7 @@ export default function DenunciaUsuario() {
               <div className="flex justify-between">
                 <button
                   type="button"
-                  onClick={() => setSubmitted(false)}
+                  onClick={() => navigate('/servicio-iniciado')} // Redirige a /servicio-iniciado
                   className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 px-6 rounded-lg transform transition-all duration-300 hover:scale-105"
                 >
                   Cancelar

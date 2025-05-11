@@ -1,182 +1,116 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Star, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate de react-router-dom
 
-export default function ServiceDetailsView() {
-  const [serviceCompleted, setServiceCompleted] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [showCamera, setShowCamera] = useState(false);
-  const videoRef = useRef(null);
-  const navigate = useNavigate();
+export default function FursuitServiceCard() {
+  const [showAllReviews, setShowAllReviews] = useState(false);
+  const navigate = useNavigate(); // Inicializa el navigate
 
-  const serviceCode = 'SERV-' + Math.floor(100000 + Math.random() * 900000);
-  const userName = 'Juan Pérez';
-  const serviceHour = new Date().toLocaleTimeString();
+  const reviews = [
+    { id: 1, avatar: "👤", text: "Está bien chido", rating: 2 },
+    { id: 2, avatar: "👤", text: "La tela es muy suave y es a la medida", rating: 3 },
+    { id: 3, avatar: "👤", text: "Excelente calidad y atención", rating: 5 },
+    { id: 4, avatar: "👤", text: "Me encantó el resultado final", rating: 4 }
+  ];
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-      }
-    } catch (error) {
-      console.error('Error al acceder a la cámara:', error);
-    }
-  };
+  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 2);
 
-  useEffect(() => {
-    if (showCamera) {
-      startCamera();
-    } else {
-      // Detener cámara si se cierra
-      const stream = videoRef.current?.srcObject;
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    }
-  }, [showCamera]);
+  const BadgeImage = ({ src, alt }) => (
+    <div className="w-16 h-16 flex items-center justify-center"> {/* Aumentado el tamaño de la caja */}
+      <img src={src} alt={alt} className="w-14 h-14 object-contain" /> {/* Aumentado el tamaño de la imagen */}
+    </div>
+  );
 
-  const handleCompleteService = () => {
-    setServiceCompleted(true);
-    setShowModal(true);
-  };
-
-  const handleEmergencyClick = () => {
-    const subject = encodeURIComponent('Emergencia durante el servicio');
-    const body = encodeURIComponent(
-      `Se ha reportado una emergencia.\n\nDatos del servicio:\n- Hora: ${serviceHour}\n- Enlace: ${window.location.origin}/credencial\n\nContacte a ${userName}`
-    );
-    window.location.href = `mailto:un.peluchito@gmail.com?subject=${subject}&body=${body}`;
+  // Función para manejar el clic en el botón "Contratar"
+  const handleHireClick = () => {
+    navigate('/cita-usuario'); // Redirige a la ruta /cita-usuario usando React Router
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto p-8">
-      {/* Modal de cámara */}
-      {showCamera && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-6 space-y-6">
-          <video ref={videoRef} className="w-full max-w-sm rounded-lg border-4 border-white" />
-          <button
-            onClick={() => {
-              setShowCamera(false);
-              navigate('/credencial');
-            }}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md"
-          >
-            Confirmar escaneo
-          </button>
-          <button
-            onClick={() => setShowCamera(false)}
-            className="text-white underline mt-2"
-          >
-            Cancelar
-          </button>
-        </div>
-      )}
-
-      {/* Modal de servicio terminado */}
-      {showModal && (
-        <div className="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md text-center space-y-4">
-            <h2 className="text-xl font-semibold text-green-600">¡Servicio completado!</h2>
-            <p className="text-gray-700">Tu código de confirmación es:</p>
-            <div className="text-2xl font-mono bg-gray-100 px-4 py-2 rounded-md border border-gray-300">
-              {serviceCode}
-            </div>
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
-            >
-              Listo
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div className={`${showModal ? 'pointer-events-none blur-sm' : ''}`}>
-        <div className="flex flex-col md:flex-row gap-10">
-          {/* Imagen y botones */}
-          <div className="flex-1">
-            <div className="mb-8 rounded-lg overflow-hidden">
-              <img
-                src="https://i.ytimg.com/vi/Zc1IMFJN7d8/sddefault.jpg"
-                alt="Service workshop"
-                className="w-full h-96 object-cover"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-6 mb-6">
-              <button
-                onClick={() => setShowCamera(true)}
-                className="bg-green-500 hover:bg-green-600 text-white font-medium py-4 px-6 rounded-md text-center"
-              >
-                Inicio de servicio
-              </button>
-
-              <button
-                onClick={handleEmergencyClick}
-                className="bg-red-600 hover:bg-red-700 text-white font-medium py-4 px-6 rounded-md flex items-center justify-center gap-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-                </svg>
-                EMERGENCIA
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              <Link
-                to="/denucia"
-                className="bg-orange-400 hover:bg-orange-500 text-white font-medium py-4 px-6 rounded-md text-center"
-              >
-                Denunciar servicio
-              </Link>
-
-              <button
-                onClick={handleCompleteService}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md text-center"
-              >
-                Servicio terminado
-              </button>
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="flex flex-col lg:flex-row">
+          {/* Left column with image */}
+          <div className="lg:w-2/5 relative">
+            <img
+              src="https://64.media.tumblr.com/582f42c9e8808689ea2b2e99b4203f67/968e19a567dd3e64-af/s1280x1920/38ca4ef88e479ab20d77d288d0b7397e61c7a394.png"
+              alt="Taller de sastrería para fursuits"
+              className="w-full h-80 object-cover rounded-lg mt-12" // Agregado mt-12 para darle un margen superior
+            />
+            <div className="absolute bottom-3 left-3 flex space-x-2">
+              <BadgeImage src="/images/badgesfixmate1.png" alt="Insignia 1" />
+              <BadgeImage src="/images/badgesfixmate2.png" alt="Insignia 2" />
+              <BadgeImage src="/images/badgesfixmate3.png" alt="Insignia 3" />
+              <BadgeImage src="/images/badgesfixmate4.png" alt="Insignia 4" />
+              <BadgeImage src="/images/badgesfixmate5.png" alt="Insignia 5" />
             </div>
           </div>
 
-          {/* Detalles del servicio */}
-          <div className="flex-1">
-            <div className="bg-blue-100 rounded-xl p-8 h-full flex flex-col">
-              <h2 className="text-purple-700 text-2xl font-semibold mb-8 text-center">Detalles del servicio</h2>
 
-              <div className="space-y-8 flex-grow">
-                <div className="flex justify-between text-lg">
-                  <span className="text-gray-600">Costo</span>
-                  <span className="font-medium">$00.00</span>
-                </div>
+          {/* Right column with info */}
+          <div className="lg:w-3/5 p-6">
+            <h2 className="text-3xl font-bold text-yellow-600 mb-4">Servicio de Sastrería</h2>
+            <p className="text-lg text-gray-700 mb-6">
+              Ofrezco mi servicio para hacer fursuits con experiencia en diseño, confección y acabados de alta calidad.
+            </p>
 
-                <div>
-                  <span className="text-gray-600">Incluye</span>
-                  <ul className="mt-2 space-y-2 text-base text-blue-900">
-                    <li>- Fursuit completo</li>
-                    <li>- Tela de alta calidad</li>
-                    <li>- Patrones a la medida</li>
-                  </ul>
-                </div>
+            <div className="bg-blue-100 p-6 rounded-lg mb-6">
+              <ul className="list-disc list-inside text-gray-700 text-lg">
+                <li>Fursuit completo</li>
+                <li>Tela de alta calidad</li>
+                <li>Patrones a la medida</li>
+              </ul>
 
-                <div className="flex justify-between text-lg">
-                  <span className="text-gray-600">Horario del servicio</span>
-                  <span className="font-medium">{serviceHour}</span>
-                </div>
+              <div className="mt-6">
+                <p className="text-xl text-gray-500">Costo del servicio</p>
+                <p className="text-2xl font-bold text-gray-900">$00.00</p>
               </div>
 
-              {serviceCompleted && (
-                <div className="mt-10">
-                  <Link
-                    to="/reseña"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md w-full block text-center"
-                  >
-                    Reseña
-                  </Link>
-                </div>
-              )}
+              <button
+                className="mt-6 bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-6 rounded-lg w-full flex items-center justify-center text-lg"
+                onClick={handleHireClick} // Llama la función al hacer clic
+              >
+                <ShoppingCart className="mr-3" size={22} />
+                Contratar
+              </button>
             </div>
+          </div>
+        </div>
+
+        {/* Reviews section */}
+        <div className="p-6 border-t border-gray-200">
+          <h3 className="text-2xl font-bold text-center mb-6">Reseñas</h3>
+
+          <div className="bg-blue-50 p-6 rounded-lg">
+            {displayedReviews.map(review => (
+              <div key={review.id} className="flex items-center mb-6 pb-4 border-b border-gray-200 last:border-b-0">
+                <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+                  {review.avatar}
+                </div>
+                <div className="flex-1">
+                  <p className="text-lg text-gray-700">{review.text}</p>
+                  <div className="flex mt-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={20}
+                        fill={i < review.rating ? "#FFB800" : "none"}
+                        stroke={i < review.rating ? "#FFB800" : "#D1D5DB"}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {reviews.length > 2 && (
+              <button
+                className="text-blue-500 hover:text-blue-700 text-lg w-full text-center mt-4"
+                onClick={() => setShowAllReviews(!showAllReviews)}
+              >
+                {showAllReviews ? "Ver menos" : "Ver más"}
+              </button>
+            )}
           </div>
         </div>
       </div>

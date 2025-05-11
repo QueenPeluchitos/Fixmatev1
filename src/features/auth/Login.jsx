@@ -39,12 +39,16 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+      
       {/* Left side with background image */}
-      <div 
-        className="w-1/2 bg-cover bg-center relative flex items-center justify-center" 
-        style={{ backgroundImage: 'url(/imagenpararegistro.jpg)' }}  // Acceso directo a imagen en public/
-      >
+      <div className="w-1/2 relative flex items-center justify-center overflow-hidden">
+        <img 
+          src="/images/imagenpararegistro.jpg" 
+          alt="Fondo decorativo" 
+          className="absolute inset-0 w-full h-full object-cover z-0" 
+        />
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+
         <div className="relative z-10 text-center">
           <div className="flex flex-col items-center">
             <img src="/images/fixmatelogo.png" alt="FixMate" className="h-16" />

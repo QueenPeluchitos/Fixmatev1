@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import {
   Home,
   PlusCircle,
-  Heart,
   BadgeDollarSign,
   LifeBuoy,
-  Wrench,
   ChevronDown,
   LogOut,
   User,
@@ -26,10 +24,8 @@ const priceRanges = [
 const menuItems = [
   { label: 'Inicio', icon: <Home size={20} />, path: '/landing' },
   { label: 'Crear Servicio', icon: <PlusCircle size={20} />, highlighted: true, path: '/crear-servicio' },
-  { label: 'Nuestros Servicios', icon: <Heart size={20} /> },
   { label: 'Rango de precios', icon: <BadgeDollarSign size={20} />, hasSubmenu: true },
-  { label: 'Soporte', icon: <LifeBuoy size={20} /> },
-  { label: 'Ayuda', icon: <Wrench size={20} /> },
+  { label: 'Soporte', icon: <LifeBuoy size={20} />, path: '/soporte' },
 ];
 
 export default function Sidebar() {
@@ -120,7 +116,7 @@ export default function Sidebar() {
           onClick={() => setShowDropdown((prev) => !prev)}
         >
           <img
-            src="/avatar.jpg"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF5TcVFjPc_Z0ZdLUAA2Df6uTrJL1C5Al4-w&s"
             alt="Usuario"
             className="w-10 h-10 rounded-full border-2 border-yellow-500"
           />
@@ -128,7 +124,6 @@ export default function Sidebar() {
             <>
               <div>
                 <p className="text-sm font-semibold text-gray-800">Usuario</p>
-                <p className="text-xs text-gray-500">Project Manager</p>
               </div>
               <ChevronDown className="ml-auto text-gray-500" size={16} />
             </>

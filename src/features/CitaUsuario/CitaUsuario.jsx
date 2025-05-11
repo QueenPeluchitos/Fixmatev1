@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+
 
 export default function CitaUsuario() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
+  const navigate = useNavigate();
+
 
   const availableDates = [5, 10, 15, 20, 25];
 
@@ -175,6 +179,7 @@ export default function CitaUsuario() {
             onClick={() => {
               setSelectedDate(null);
               setSelectedTime(null);
+              navigate("/landing");
             }}
           >
             Cancelar

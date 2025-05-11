@@ -13,17 +13,14 @@ export default function Footer() {
 
         {/* Menú de enlaces en dispositivos grandes */}
         <div className="hidden md:flex space-x-8">
-          <a href="#features" className="hover:text-gray-300 uppercase text-sm font-medium">
-            Features
-          </a>
-          <a href="#services" className="hover:text-gray-300 uppercase text-sm font-medium">
+          <a href="/landing" className="hover:text-gray-300 uppercase text-sm font-medium">
             Servicios
           </a>
-          <a href="#pricing" className="hover:text-gray-300 uppercase text-sm font-medium">
-            Precios
-          </a>
-          <a href="#howto" className="hover:text-gray-300 uppercase text-sm font-medium">
+          <a href="/faq" className="hover:text-gray-300 uppercase text-sm font-medium">
             Preguntas frecuentes
+          </a>
+          <a href="/soporte" className="hover:text-gray-300 uppercase text-sm font-medium">
+            Soporte
           </a>
         </div>
 

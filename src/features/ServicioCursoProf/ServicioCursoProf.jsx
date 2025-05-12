@@ -3,8 +3,8 @@ import { useState } from "react";
 
 export default function ServicioCursoProf() {
   const [serviceData, setServiceData] = useState({
-    status: "terminado",
-    serviceCode: "Ingrese aquí su código",
+    status: "pendiente",
+    serviceCode: "",
     details: {
       cost: "$00.00",
       includes: [
@@ -20,9 +20,19 @@ export default function ServicioCursoProf() {
     setServiceData({ ...serviceData, serviceCode: e.target.value });
   };
 
+  const handleIniciarClick = () => {
+    alert("Servicio iniciado");
+    setServiceData({ ...serviceData, status: "en curso" });
+  };
+
   const handleTerminarClick = () => {
     alert("Servicio marcado como terminado");
+    setServiceData({ ...serviceData, status: "terminado" });
   };
+
+  const isCodeValid =
+    serviceData.serviceCode.trim() !== "" &&
+    serviceData.serviceCode !== "Ingrese aquí su código";
 
   return (
     <div className="max-w-7xl mx-auto p-10 flex flex-col md:flex-row gap-12 bg-gray-50 my-24 text-lg">
@@ -58,17 +68,14 @@ export default function ServicioCursoProf() {
           </div>
         </div>
 
-        {/* Código del servicio editable */}
-        <div className="bg-white p-6 rounded-xl shadow-lg">
-          <input
-            type="text"
-            value={serviceData.serviceCode}
-            onChange={handleCodeChange}
-            className="w-full border border-gray-300 rounded-lg p-3 text-center font-semibold text-gray-700 text-lg"
-          />
-          <div className="text-center text-gray-400 text-sm mt-3">
-            Pida al cliente al finalizar el servicio
-          </div>
+        {/* Botón iniciar servicio */}
+        <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col gap-4">
+          <button
+            onClick={handleIniciarClick}
+            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-3 px-10 rounded-xl font-semibold text-lg shadow-lg transition self-center"
+          >
+            Iniciar Servicio
+          </button>
         </div>
       </div>
 
@@ -103,11 +110,28 @@ export default function ServicioCursoProf() {
             </div>
           </div>
 
-          {/* Botón de estado movido aquí */}
-          <div className="mt-10 flex justify-center">
+          {/* Código + botón terminar */}
+          <div className="bg-white p-6 rounded-xl shadow-lg mt-8 flex flex-col gap-4">
+            <input
+              type="text"
+              value={serviceData.serviceCode}
+              onChange={handleCodeChange}
+              placeholder="Ingresa código"
+              className="w-full border border-gray-300 rounded-lg p-3 text-center font-semibold text-gray-700 text-lg"
+            />
+            <div className="text-center text-gray-400 text-sm">
+              Pida al cliente al finalizar el servicio
+            </div>
+
+            {/* Botón terminar servicio */}
             <button
               onClick={handleTerminarClick}
-              className="bg-green-600 hover:bg-green-700 text-white py-3 px-10 rounded-xl font-semibold text-lg shadow-lg transition"
+              disabled={!isCodeValid}
+              className={`${
+                isCodeValid
+                  ? "bg-green-600 hover:bg-green-700"
+                  : "bg-gray-300 cursor-not-allowed"
+              } text-white py-3 px-10 rounded-xl font-semibold text-lg shadow-lg transition`}
             >
               Terminar Servicio
             </button>

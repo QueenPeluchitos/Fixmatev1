@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const icons = {
   search: (
@@ -18,7 +19,6 @@ const icons = {
       <path d="M18 12v6"/>
     </svg>
   ),
-  
   flower: (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500">
       <path d="M15 7.13V6a3 3 0 0 0-5.14-2.1L8 2"/><path d="M14.12 3.88 16 2"/><path d="M22 13h-4v-2a4 4 0 0 0-4-4h-1.3"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="m2 2 20 20"/><path d="M7.7 7.7A4 4 0 0 0 6 11v3a6 6 0 0 0 11.13 3.13"/><path d="M12 20v-8"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
@@ -40,7 +40,6 @@ const icons = {
     </svg>
   ),
 };
-
 
 const Landing = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -138,7 +137,6 @@ const Landing = () => {
             key={index}
             className={`px-6 py-2 rounded-full text-sm transition-colors duration-200 ${
               category.active
-
                 ? "bg-[#535a75] text-white"
                 : "bg-[#9BA8D9] text-white hover:bg-[#606d9c]"
             }`}
@@ -150,36 +148,38 @@ const Landing = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {services.map((service, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            <div className="relative">
-              <img
-                src={service.image}
-                alt={service.title}
-                className="w-full h-44 object-cover"
-              />
-              <div className="absolute bottom-2 left-2 flex gap-1">
-                {[...Array(service.rating)].map((_, i) => (
-                  <span key={i} className="text-amber-400">★</span>
-                ))}
-              </div>
-              {service.hasFireIcon && (
-                <div className="absolute top-2 right-2 p-1 rounded-full bg-amber-200 text-white">
-                  {icons.award}
-                </div>
-              )}
-            </div>
-            <div className="p-4">
-              <h3 className="text-lg font-bold text-amber-500">{service.title}</h3>
-              <p className="text-sm text-gray-600 mt-1">{service.description}</p>
-              <div className="mt-4 flex justify-end">
+          <Link to="/servicio-usuario" key={index}>
+            <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div className="relative">
                 <img
-                  src={service.providerImage}
-                  alt="Proveedor"
-                  className="w-8 h-8 rounded-full border-2 border-white"
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-44 object-cover"
                 />
+                <div className="absolute bottom-2 left-2 flex gap-1">
+                  {[...Array(service.rating)].map((_, i) => (
+                    <span key={i} className="text-amber-400">★</span>
+                  ))}
+                </div>
+                {service.hasFireIcon && (
+                  <div className="absolute top-2 right-2 p-1 rounded-full bg-amber-200 text-white">
+                    {icons.award}
+                  </div>
+                )}
+              </div>
+              <div className="p-4">
+                <h3 className="text-lg font-bold text-amber-500">{service.title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                <div className="mt-4 flex justify-end">
+                  <img
+                    src={service.providerImage}
+                    alt="Proveedor"
+                    className="w-8 h-8 rounded-full border-2 border-white"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

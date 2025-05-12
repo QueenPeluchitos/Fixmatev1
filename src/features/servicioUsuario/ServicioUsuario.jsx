@@ -1,182 +1,127 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Star, ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-export default function ServiceDetailsView() {
-  const [serviceCompleted, setServiceCompleted] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [showCamera, setShowCamera] = useState(false);
-  const videoRef = useRef(null);
+export default function FursuitServiceCard() {
   const navigate = useNavigate();
 
-  const serviceCode = 'SERV-' + Math.floor(100000 + Math.random() * 900000);
-  const userName = 'Juan Pérez';
-  const serviceHour = new Date().toLocaleTimeString();
+  const reviews = [
+    { id: 1, avatar: "👤", text: "Está bien chido", rating: 2 },
+    { id: 2, avatar: "👤", text: "La tela es muy suave y es a la medida", rating: 3 },
+    { id: 3, avatar: "👤", text: "Excelente calidad y atención", rating: 5 },
+    { id: 4, avatar: "👤", text: "Me encantó el resultado final", rating: 4 },
+    { id: 5, avatar: "👤", text: "Trabajo impecable y puntual", rating: 5 }
+  ];
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-      }
-    } catch (error) {
-      console.error('Error al acceder a la cámara:', error);
-    }
-  };
+  const [index, setIndex] = useState(0);
+  const reviewsPerPage = 2;
+  const maxIndex = Math.floor((reviews.length - 1) / reviewsPerPage);
 
-  useEffect(() => {
-    if (showCamera) {
-      startCamera();
-    } else {
-      // Detener cámara si se cierra
-      const stream = videoRef.current?.srcObject;
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    }
-  }, [showCamera]);
+  const paginatedReviews = reviews.slice(index * reviewsPerPage, (index + 1) * reviewsPerPage);
 
-  const handleCompleteService = () => {
-    setServiceCompleted(true);
-    setShowModal(true);
-  };
+  const BadgeImage = ({ src, alt }) => (
+    <img src={src} alt={alt} className="w-10 h-10 object-contain" />
+  );
 
-  const handleEmergencyClick = () => {
-    const subject = encodeURIComponent('Emergencia durante el servicio');
-    const body = encodeURIComponent(
-      `Se ha reportado una emergencia.\n\nDatos del servicio:\n- Hora: ${serviceHour}\n- Enlace: ${window.location.origin}/credencial\n\nContacte a ${userName}`
-    );
-    window.location.href = `mailto:un.peluchito@gmail.com?subject=${subject}&body=${body}`;
-  };
+  const handleHireClick = () => navigate('/cita-usuario');
 
   return (
-    <div className="relative max-w-7xl mx-auto p-8">
-      {/* Modal de cámara */}
-      {showCamera && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-6 space-y-6">
-          <video ref={videoRef} className="w-full max-w-sm rounded-lg border-4 border-white" />
-          <button
-            onClick={() => {
-              setShowCamera(false);
-              navigate('/credencial');
-            }}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md"
-          >
-            Confirmar escaneo
-          </button>
-          <button
-            onClick={() => setShowCamera(false)}
-            className="text-white underline mt-2"
-          >
-            Cancelar
-          </button>
-        </div>
-      )}
-
-      {/* Modal de servicio terminado */}
-      {showModal && (
-        <div className="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md text-center space-y-4">
-            <h2 className="text-xl font-semibold text-green-600">¡Servicio completado!</h2>
-            <p className="text-gray-700">Tu código de confirmación es:</p>
-            <div className="text-2xl font-mono bg-gray-100 px-4 py-2 rounded-md border border-gray-300">
-              {serviceCode}
-            </div>
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
-            >
-              Listo
-            </button>
+    <div className="max-w-7xl mx-auto px-6 py-12">
+      {/* Servicio */}
+      <div className="grid lg:grid-cols-2 gap-10 bg-white rounded-2xl shadow-xl overflow-hidden">
+        {/* Imagen */}
+        <div className="relative bg-gray-100">
+          <img
+            src="https://64.media.tumblr.com/582f42c9e8808689ea2b2e99b4203f67/968e19a567dd3e64-af/s1280x1920/38ca4ef88e479ab20d77d288d0b7397e61c7a394.png"
+            alt="Fursuit"
+            className="object-cover h-[450px] w-full"
+          />
+          <div className="absolute bottom-4 left-4 flex gap-2 bg-white bg-opacity-90 p-2 rounded-lg shadow-md">
+            {[1, 2, 3, 4, 5].map(i => (
+              <BadgeImage key={i} src={`/images/badgesfixmate${i}.png`} alt={`Insignia ${i}`} />
+            ))}
           </div>
         </div>
-      )}
 
-      <div className={`${showModal ? 'pointer-events-none blur-sm' : ''}`}>
-        <div className="flex flex-col md:flex-row gap-10">
-          {/* Imagen y botones */}
-          <div className="flex-1">
-            <div className="mb-8 rounded-lg overflow-hidden">
-              <img
-                src="https://i.ytimg.com/vi/Zc1IMFJN7d8/sddefault.jpg"
-                alt="Service workshop"
-                className="w-full h-96 object-cover"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-6 mb-6">
-              <button
-                onClick={() => setShowCamera(true)}
-                className="bg-green-500 hover:bg-green-600 text-white font-medium py-4 px-6 rounded-md text-center"
-              >
-                Inicio de servicio
-              </button>
-
-              <button
-                onClick={handleEmergencyClick}
-                className="bg-red-600 hover:bg-red-700 text-white font-medium py-4 px-6 rounded-md flex items-center justify-center gap-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-                </svg>
-                EMERGENCIA
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              <Link
-                to="/denucia"
-                className="bg-orange-400 hover:bg-orange-500 text-white font-medium py-4 px-6 rounded-md text-center"
-              >
-                Denunciar servicio
-              </Link>
-
-              <button
-                onClick={handleCompleteService}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md text-center"
-              >
-                Servicio terminado
-              </button>
+        {/* Info */}
+        <div className="p-8 flex flex-col justify-between">
+          <div>
+            <h2 className="text-3xl font-bold text-yellow-600 mb-2">Servicio de Sastrería</h2>
+            <p className="text-gray-700 text-lg mb-6">
+              Ofrezco mi servicio para hacer fursuits con experiencia en diseño, confección y acabados de alta calidad.
+            </p>
+            <div className="bg-blue-50 p-5 rounded-xl space-y-4">
+              <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
+                <li>Fursuit completo</li>
+                <li>Tela de alta calidad</li>
+                <li>Patrones a la medida</li>
+              </ul>
+              <div>
+                <p className="text-sm text-gray-500">Costo del servicio</p>
+                <p className="text-3xl font-bold text-gray-900">$00.00</p>
+              </div>
             </div>
           </div>
 
-          {/* Detalles del servicio */}
-          <div className="flex-1">
-            <div className="bg-blue-100 rounded-xl p-8 h-full flex flex-col">
-              <h2 className="text-purple-700 text-2xl font-semibold mb-8 text-center">Detalles del servicio</h2>
+          <button
+            onClick={handleHireClick}
+            className="mt-8 bg-[#49568A] hover:bg-[#3b476f] text-white py-3 px-6 rounded-lg text-lg flex items-center justify-center transition-all"
+          >
+            <ShoppingCart className="mr-2" size={22} />
+            Contratar
+          </button>
+        </div>
+      </div>
 
-              <div className="space-y-8 flex-grow">
-                <div className="flex justify-between text-lg">
-                  <span className="text-gray-600">Costo</span>
-                  <span className="font-medium">$00.00</span>
-                </div>
+      {/* Carrusel de Reseñas */}
+      <div className="mt-16 px-4">
+        <h3 className="text-3xl font-bold text-center text-gray-800 mb-2">Opiniones de nuestros clientes</h3>
+        <p className="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+          Lee lo que otros dicen sobre su experiencia con nuestro servicio.
+        </p>
 
-                <div>
-                  <span className="text-gray-600">Incluye</span>
-                  <ul className="mt-2 space-y-2 text-base text-blue-900">
-                    <li>- Fursuit completo</li>
-                    <li>- Tela de alta calidad</li>
-                    <li>- Patrones a la medida</li>
-                  </ul>
-                </div>
-
-                <div className="flex justify-between text-lg">
-                  <span className="text-gray-600">Horario del servicio</span>
-                  <span className="font-medium">{serviceHour}</span>
+        <div className="relative">
+          <div className="grid md:grid-cols-2 gap-6 transition-all">
+            {paginatedReviews.map(review => (
+              <div key={review.id} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                <div className="flex items-start gap-4 mb-2">
+                  <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-xl">
+                    {review.avatar}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex mb-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={18}
+                          fill={i < review.rating ? "#FFB800" : "none"}
+                          stroke={i < review.rating ? "#FFB800" : "#D1D5DB"}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-gray-700 italic">"{review.text}"</p>
+                  </div>
                 </div>
               </div>
+            ))}
+          </div>
 
-              {serviceCompleted && (
-                <div className="mt-10">
-                  <Link
-                    to="/reseña"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md w-full block text-center"
-                  >
-                    Reseña
-                  </Link>
-                </div>
-              )}
-            </div>
+          {/* Botones de navegación */}
+          <div className="flex justify-center gap-4 mt-8">
+            <button
+              onClick={() => setIndex(prev => Math.max(0, prev - 1))}
+              disabled={index === 0}
+              className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full disabled:opacity-50"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={() => setIndex(prev => Math.min(maxIndex, prev + 1))}
+              disabled={index >= maxIndex}
+              className="bg-gray-200 hover:bg-gray-300 p-2 rounded-full disabled:opacity-50"
+            >
+              <ChevronRight size={20} />
+            </button>
           </div>
         </div>
       </div>

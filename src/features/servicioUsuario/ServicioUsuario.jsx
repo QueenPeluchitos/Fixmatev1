@@ -36,6 +36,16 @@ export default function FursuitServiceCard() {
             alt="Fursuit"
             className="object-cover h-[450px] w-full"
           />
+          
+          {/* Estrellas arriba */}
+          <div className="absolute top-4 left-4 flex gap-2">
+            {[...Array(4)].map((_, i) => (
+              <Star key={i} size={24} fill="#FFB800" stroke="#FFB800" />
+            ))}
+            <Star size={24} fill="none" stroke="#D1D5DB" />
+          </div>
+
+          {/* Insignias debajo de las estrellas */}
           <div className="absolute bottom-4 left-4 flex gap-2 bg-white bg-opacity-90 p-2 rounded-lg shadow-md">
             {[1, 2, 3, 4, 5].map(i => (
               <BadgeImage key={i} src={`/images/badgesfixmate${i}.png`} alt={`Insignia ${i}`} />

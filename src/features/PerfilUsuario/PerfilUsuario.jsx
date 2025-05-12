@@ -15,6 +15,12 @@ export default function PerfilUsuario() {
 
   const [editField, setEditField] = useState(null);
 
+  const [historialServicios, setHistorialServicios] = useState([
+    { id: 1, nombre: 'Servicio 1', estado: 'Pendiente', precio: '$00.00' },
+    { id: 2, nombre: 'Servicio 2', estado: 'En curso', precio: '$50.00' },
+    { id: 3, nombre: 'Servicio 3', estado: 'Completado', precio: '$120.00' },
+  ]);
+
   const handleChange = (field, value) => {
     setUserData((prev) => ({ ...prev, [field]: value }));
   };
@@ -54,11 +60,21 @@ export default function PerfilUsuario() {
     }
   };
 
+  const handleRedirect = (service) => {
+    if (service.estado === 'Pendiente') {
+      window.location.href = '/servicio-pendiente';
+    } else if (service.estado === 'En curso') {
+      window.location.href = '/servicio-iniciado';
+    } else if (service.estado === 'Completado') {
+      window.location.href = '/reseña';
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-        {/* Columna izquierda - Información del usuario */}
+        {/* Perfil de Usuario */}
         <div className="bg-white shadow-xl rounded-2xl p-8 text-center">
           <div className="relative w-48 h-48 mx-auto mb-6 cursor-pointer rounded-full overflow-hidden shadow-lg" onClick={handleImageClick}>
             <img src={profileImage} alt="Perfil" className="w-full h-full object-cover" />
@@ -99,27 +115,38 @@ export default function PerfilUsuario() {
           </button>
         </div>
 
-        {/* Columna derecha - Historial y Favoritos */}
+        {/* Historial y Favoritos */}
         <div className="space-y-10">
-          {/* Historial */}
+          {/* Historial de servicios */}
           <div className="bg-white shadow-xl rounded-2xl p-6">
             <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Historial de servicios</h3>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                <span className="text-gray-600">Servicio</span>
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-600">$00.00</span>
-                  <span className="bg-yellow-400 text-white text-xs py-1 px-3 rounded-full">Pendiente</span>
+            <div className="space-y-4">
+              {historialServicios.map((service) => (
+                <div key={service.id} className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-700 font-medium">{service.nombre}</span>
+                    <span className="text-gray-700 font-semibold">{service.precio}</span>
+                  </div>
+                  <div className="flex justify-between items-center mt-2">
+                    <span className={`text-xs py-1 px-3 rounded-full text-white ${
+                      service.estado === 'Pendiente' ? 'bg-yellow-400' :
+                      service.estado === 'En curso' ? 'bg-green-500' : 'bg-blue-500'
+                    }`}>
+                      {service.estado}
+                    </span>
+                    <button
+                      onClick={() => handleRedirect(service)}
+                      className={`text-white py-1 px-3 text-sm rounded transition-colors ${
+                        service.estado === 'Pendiente' ? 'bg-yellow-500 hover:bg-yellow-600' :
+                        service.estado === 'En curso' ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'
+                      }`}
+                    >
+                      {service.estado === 'Pendiente' ? 'Ver servicio pendiente' :
+                      service.estado === 'En curso' ? 'Ver servicio en curso' : 'Dejar reseña'}
+                    </button>
+                  </div>
                 </div>
-              </div>
-
-              <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                <span className="text-gray-600">Servicio</span>
-                <div className="flex items-center space-x-2">
-                  <span className="text-gray-600">$00.00</span>
-                  <span className="bg-blue-500 text-white text-xs py-1 px-3 rounded-full">Completado</span>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
@@ -128,7 +155,7 @@ export default function PerfilUsuario() {
             <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Favoritos</h3>
             <div className="grid grid-cols-2 gap-4">
               {['cerrajero', 'limpieza'].map((tipo, index) => (
-                <div key={index} className="relative bg-gray-100 rounded-lg overflow-hidden">
+                <div key={index} className="relative bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-transform hover:scale-105">
                   <img src="/api/placeholder/300/200" alt={`Servicio de ${tipo}`} className="w-full h-28 object-cover" />
                   <div className="absolute bottom-10 left-2 flex space-x-1">
                     {[...Array(5)].map((_, i) => (

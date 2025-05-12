@@ -18,7 +18,7 @@ import ServicioPendiente from '../features/servicioPendiente/ServicioPendiente';
 import ServicioProf from '../features/servicioProf/ServicioProf';
 import ServicioUsuario from '../features/servicioUsuario/ServicioUsuario';
 import ServicioIniado from '../features/servicioIniciado/ServicioIniciado';
-import Faq from '../features/Faq/Faq';
+import Faq from '../features/faq/Faq';
 import Soporte from '../features/soporte/Soporte';
 
 

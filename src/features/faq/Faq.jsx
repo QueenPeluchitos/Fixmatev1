@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const Faq = () => {
   const faqs = [
@@ -35,25 +36,48 @@ const Faq = () => {
     },
   ];
 
+  // Estado para gestionar qué pregunta está desplegada
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const toggleAnswer = (index) => {
+    if (openIndex === index) {
+      setOpenIndex(null);
+    } else {
+      setOpenIndex(index);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center text-sky-900 mb-8">
+      <h1 className="text-4xl font-bold text-center text-[#49568A] mb-8">
         Preguntas Frecuentes
       </h1>
 
       <div className="space-y-6">
         {faqs.map((faq, index) => (
-          <div key={index} className="border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-sky-800">{faq.question}</h3>
-              <p className="text-sm text-gray-600 mt-2">{faq.answer}</p>
+          <div key={index} className="border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <div className="flex justify-between items-center p-4 cursor-pointer" onClick={() => toggleAnswer(index)}>
+              <h3 className="text-xl font-semibold text-gray-800">{faq.question}</h3>
+              <div className="text-[#49568A]">
+                {openIndex === index ? (
+                  <ChevronUp size={24} />
+                ) : (
+                  <ChevronDown size={24} />
+                )}
+              </div>
             </div>
+
+            {openIndex === index && (
+              <div className="p-4 bg-gray-50">
+                <p className="text-sm text-gray-600">{faq.answer}</p>
+              </div>
+            )}
           </div>
         ))}
       </div>
 
       <div className="mt-10 text-center">
-        <Link to="/landing" className="inline-block py-2 px-4 bg-amber-500 text-white rounded-full hover:bg-amber-400 transition-colors">
+        <Link to="/landing" className="inline-block py-2 px-6 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors">
           Volver al inicio
         </Link>
       </div>

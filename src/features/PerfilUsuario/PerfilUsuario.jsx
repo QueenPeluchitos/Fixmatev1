@@ -70,6 +70,10 @@ export default function PerfilUsuario() {
     }
   };
 
+  const handleFavoritoClick = (tipo) => {
+    window.location.href = `/servicio-usuario?tipo=${tipo}`;
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -155,7 +159,11 @@ export default function PerfilUsuario() {
             <h3 className="text-xl font-semibold text-gray-800 mb-4 text-center">Favoritos</h3>
             <div className="grid grid-cols-2 gap-4">
               {['cerrajero', 'limpieza'].map((tipo, index) => (
-                <div key={index} className="relative bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-transform hover:scale-105">
+                <div
+                  key={index}
+                  onClick={() => handleFavoritoClick(tipo)}
+                  className="cursor-pointer relative bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-transform hover:scale-105"
+                >
                   <img src="/api/placeholder/300/200" alt={`Servicio de ${tipo}`} className="w-full h-28 object-cover" />
                   <div className="absolute bottom-10 left-2 flex space-x-1">
                     {[...Array(5)].map((_, i) => (

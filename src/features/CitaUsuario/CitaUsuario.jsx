@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
-
 export default function CitaUsuario() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
   const navigate = useNavigate();
-
 
   const availableDates = [5, 10, 15, 20, 25];
 
@@ -72,19 +70,19 @@ export default function CitaUsuario() {
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg space-y-8">
       {/* Título Agendar cita */}
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-yellow-500">Agendar Cita</h1>
+        <h1 className="text-3xl font-bold text-[#E5A800]">Agendar Cita</h1>
       </div>
 
       {/* Descripción del servicio */}
       <div className="flex gap-6 items-center">
         <img src="/api/placeholder/180/140" alt="Servicio" className="rounded-lg w-48 h-36 object-cover" />
         <div className="space-y-3">
-          <h2 className="text-2xl font-semibold text-yellow-500">Servicio de plomería a domicilio</h2>
+          <h2 className="text-2xl font-semibold text-[#E5A800]">Servicio de plomería a domicilio</h2>
           <p className="text-gray-600 text-base">
             Ofrecemos reparación de fugas, instalación y mantenimiento de grifos, tuberías, WC, regaderas y sistemas hidráulicos completos. Nuestro servicio incluye revisión general del sistema, asesoría técnica y atención el mismo día en la comodidad de tu hogar.
           </p>
           <div>
-            <span className="text-blue-500 font-semibold">Costo: </span>
+            <span className="text-[#49568A] font-semibold">Costo: </span>
             <span className="text-gray-800">$450 MXN</span>
           </div>
         </div>
@@ -98,7 +96,7 @@ export default function CitaUsuario() {
           <p className="text-sm text-gray-500">Plomero certificado con más de 10 años de experiencia.</p>
           <div className="flex items-center gap-1">
             {[...Array(5)].map((_, index) => (
-              <svg key={index} className="w-5 h-5 text-yellow-400" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" stroke="currentColor">
+              <svg key={index} className="w-5 h-5 text-[#E5A800]" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 15l-3.09 1.636 1.182-3.869-2.91-2.31h3.596l1.182-3.869 1.182 3.869h3.595l-2.91 2.31 1.181 3.869z" />
               </svg>
             ))}
@@ -129,9 +127,9 @@ export default function CitaUsuario() {
                 <button
                   onClick={() => d.isAvailable && setSelectedDate(d.date)}
                   className={`w-full py-2 rounded-lg text-sm font-medium
-                    ${isToday(d.date) ? 'bg-blue-100 text-blue-600' : ''}
-                    ${isSelected(d.date) ? 'bg-yellow-500 text-white' : ''}
-                    ${d.isAvailable && !isSelected(d.date) ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' : ''}
+                    ${isToday(d.date) ? 'bg-[#49568A]/10 text-[#49568A]' : ''}
+                    ${isSelected(d.date) ? 'bg-[#E5A800] text-white' : ''}
+                    ${d.isAvailable && !isSelected(d.date) ? 'bg-[#E5A800]/20 text-[#E5A800] hover:bg-[#E5A800]/30' : ''}
                     ${!d.isAvailable ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : ''}`}
                 >
                   {d.day}
@@ -145,9 +143,9 @@ export default function CitaUsuario() {
 
         {/* Leyenda */}
         <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-8">
-          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-yellow-500 rounded"></div> Seleccionado</div>
-          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-yellow-100 rounded"></div> Disponible</div>
-          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-blue-100 rounded"></div> Hoy</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-[#E5A800] rounded"></div> Seleccionado</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-[#E5A800]/20 rounded"></div> Disponible</div>
+          <div className="flex items-center gap-2"><div className="w-4 h-4 bg-[#49568A]/10 rounded"></div> Hoy</div>
           <div className="flex items-center gap-2"><div className="w-4 h-4 bg-gray-200 rounded"></div> No disponible</div>
         </div>
       </div>
@@ -162,7 +160,9 @@ export default function CitaUsuario() {
                 key={slot}
                 onClick={() => setSelectedTime(slot)}
                 className={`py-2 text-sm rounded-md
-                  ${selectedTime === slot ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
+                  ${selectedTime === slot
+                    ? 'bg-[#49568A] text-white'
+                    : 'bg-[#49568A]/10 text-[#49568A] hover:bg-[#49568A]/20'}`}
               >
                 {slot}
               </button>
@@ -175,7 +175,7 @@ export default function CitaUsuario() {
       {selectedDate && selectedTime && (
         <div className="mt-8 flex justify-end gap-4">
           <button
-            className="px-4 py-2 border border-yellow-300 rounded-md hover:bg-yellow-200"
+            className="px-4 py-2 border border-[#E5A800] rounded-md hover:bg-[#E5A800]/20"
             onClick={() => {
               setSelectedDate(null);
               setSelectedTime(null);
@@ -185,7 +185,7 @@ export default function CitaUsuario() {
             Cancelar
           </button>
           <button
-            className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+            className="px-4 py-2 bg-[#E5A800] text-white rounded-md hover:bg-[#E5A800]/90"
             onClick={() => setConfirmed(true)}
           >
             Confirmar cita

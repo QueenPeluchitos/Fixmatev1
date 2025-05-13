@@ -6,7 +6,7 @@ export default function SoportePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 m-30">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="flex flex-col lg:flex-row">
           {/* Left column with support information */}
@@ -44,10 +44,6 @@ export default function SoportePage() {
               <div className="flex items-center justify-center space-x-3">
                 <Mail className="w-5 h-5 text-blue-500" />
                 <p className="text-lg text-gray-700">fixmatesoporte@gmail.com</p>
-              </div>
-              <div className="flex items-center justify-center space-x-3">
-                <Phone className="w-5 h-5 text-yellow-500" />
-                <p className="text-lg text-gray-700">+52 443 000 0000</p>
               </div>
             </div>
 

@@ -43,6 +43,7 @@ const icons = {
 
 const Landing = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleServices, setVisibleServices] = useState(4);
 
   const mainCategories = [
     { icon: icons.home, name: "Hogar y mantenimiento" },
@@ -62,55 +63,30 @@ const Landing = () => {
     { name: "Coches", active: false },
   ];
 
-  const services = [
-    {
-      title: "Servicio de cerrajero",
-      description: "Ofrezco mi servicio con experiencia en los últimos 5 años",
-      image: "https://www.quadratin.com.mx/www/wp-content/uploads/2018/04/WhatsApp-Image-2018-04-09-at-08.48.49-1.jpeg",
-      rating: 4,
-      hasFireIcon: false,
-      providerImage: "https://www.psychologs.com/wp-content/uploads/2024/07/how-to-be-a-nicer-person.jpg"
-    },
-    {
-      title: "Servicio de limpieza",
-      description: "Ofrezco mi servicio con experiencia en los últimos 3 años",
-      image: "https://www.stesso.com.mx/uploads/_mastheadHd/15578/Contratar-un-servicio-de-limpieza-profesional-vs.-limpieza-interna-de-la-empresa.webp",
-      rating: 5,
-      hasFireIcon: false,
-      providerImage: "https://images.squarespace-cdn.com/content/v1/5c7c30767980b31affc87b09/1602396079712-4JS2RJYHTAP5OXOUQ1SB/image-asset.jpeg"
-    },
-    {
-      title: "Servicio de limpieza",
-      description: "Ofrezco mi servicio con experiencia en los últimos 2 años",
-      image: "https://irp.cdn-website.com/6e5a8fac/MOBILE/jpg/690.jpg",
-      rating: 5,
-      hasFireIcon: true,
-      providerImage: "https://www.yourtango.com/sites/default/files/image_blog/2024-10/signs-genuinely-kind-person-cant-be-faked.png"
-    },
-    {
-      title: "Servicio de mecánico",
-      description: "Ofrezco mi servicio con experiencia en los últimos 10 años",
-      image: "https://speed-service.com.mx/wp-content/uploads/2015/12/mecanico_movil_en_miami-1024x682.jpg",
-      rating: 5,
-      hasFireIcon: false,
-      providerImage: "https://a.espncdn.com/combiner/i?img=/i/headshots/college-football/players/full/5152030.png"
-    },
-  ];
+  const services = Array(12).fill(null).map((_, i) => ({
+    title: `Servicio #${i + 1}`,
+    description: `Ofrezco mi servicio con experiencia en los últimos ${2 + (i % 5)} años`,
+    image: `https://picsum.photos/id/${100 + i}/400/300`,
+    rating: 3 + (i % 3),
+    hasFireIcon: i % 4 === 0,
+    providerImage: `https://i.pravatar.cc/150?img=${i + 1}`,
+  }));
+
+  const handleShowMore = () => {
+    setVisibleServices((prev) => prev + 4);
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center text-[#49568A] mb-2">
-        Contrata con confianza
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <h1 className="text-5xl font-bold text-center text-[#49568A] mb-2 p-15">
+        Contrata con confianza desde casa
       </h1>
-      <h2 className="text-4xl font-bold text-center text-[#49568A] mb-8">
-        desde casa
-      </h2>
 
       <div className="relative max-w-xl mx-auto mb-10">
         <input
           type="text"
           placeholder="¿En qué te podemos ayudar?"
-          className="w-full py-3 px-6 bg-[#FFE08B] rounded-full text-[#49568A] focus:outline-none"
+          className="w-full py-3 px-6 bg-[#f5ecc5] rounded-full text-[#49568A] focus:outline-none"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -146,8 +122,8 @@ const Landing = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {services.map((service, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {services.slice(0, visibleServices).map((service, index) => (
           <Link to="/servicio-usuario" key={index}>
             <div className="border border-[#DAE0F6] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
               <div className="relative">
@@ -182,6 +158,17 @@ const Landing = () => {
           </Link>
         ))}
       </div>
+
+      {visibleServices < services.length && (
+        <div className="text-center mt-6">
+          <button
+            onClick={handleShowMore}
+            className="px-8 py-3 text-white bg-[#49568A] rounded-full text-lg"
+          >
+            Ver más
+          </button>
+        </div>
+      )}
     </div>
   );
 };

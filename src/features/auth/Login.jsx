@@ -10,11 +10,6 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // const savedUser = {
-  //   name: 'Hamid',
-  //   avatar: '/images/avatar.png'
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -32,22 +27,16 @@ const Login = () => {
     }
   };
 
-  // const handleSavedUserLogin = () => {
-  //   setEmail(savedUser.name.toLowerCase() + '@fixmate.com');
-  //   document.getElementById('password').focus();
-  // };
-
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      
-      {/* Left side with background image */}
+    <div className="flex min-h-screen bg-[#DAE0F6]">
+      {/* Lado izquierdo con imagen de fondo */}
       <div className="w-1/2 relative flex items-center justify-center overflow-hidden">
         <img 
-          src='/images/imagenpararegistro.jpg'
+          src="/images/imagenfondo.png"
           alt="Fondo decorativo"
           className="absolute inset-0 w-full h-full object-cover z-2" 
         />
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-[#49568A] bg-opacity-50"></div>
 
         <div className="relative z-10 text-center">
           <div className="flex flex-col items-center">
@@ -57,24 +46,23 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Right side with login form */}
+      {/* Lado derecho con el formulario */}
       <div className="w-1/2 flex items-center justify-center bg-white p-8">
         <div className="w-96">
-          <h1 className="text-3xl font-bold text-yellow-500 mb-2">Inicia sesión</h1>
-          <p className="text-gray-600 mb-8">Ingresa tus datos</p>
+          <h1 className="text-5xl font-bold text-[#E5A800] mb-2">Inicia sesión</h1>
+          <p className="text-[#49568A] mb-8">Ingresa tus datos</p>
 
           {errorMessage && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4">
+            <div className="bg-red-100 text-red-600 p-3 rounded-md mb-4">
               {errorMessage}
             </div>
           )}
 
-          {/* Login form */}
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <input
                 type="email"
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -84,7 +72,7 @@ const Login = () => {
               <input
                 id="password"
                 type="password"
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -92,17 +80,16 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-md font-medium hover:bg-blue-700 transition duration-200"
+              className="w-full bg-[#49568A] text-white py-3 rounded-md font-medium hover:bg-[#3b4672] transition duration-200"
             >
-              {loading ? 'Loading...' : 'Login'}
+              {loading ? 'Cargando...' : 'Iniciar sesión'}
             </button>
           </form>
 
-          {/* Sign up link */}
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-[#49568A]">
               ¿No tienes una cuenta?{' '}
-              <Link to="/registro" className="text-blue-600 font-medium">
+              <Link to="/registro" className="text-[#E5A800] font-medium hover:underline">
                 Regístrate
               </Link>
             </p>

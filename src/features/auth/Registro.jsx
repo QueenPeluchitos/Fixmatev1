@@ -14,28 +14,27 @@ const Registro = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Aquí iría el request real al backend
       console.log('User registered:', { name, email, password });
       Cookies.set('authToken', 'true', { expires: 1, secure: true });
       navigate('/login');
     } catch (error) {
       console.error('Error registering:', error);
-      setErrorMessage('Registration failed. Try again.');
+      setErrorMessage('Error en el registro. Intenta nuevamente.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Left side with registration form */}
+    <div className="flex min-h-screen bg-[#DAE0F6]">
+      {/* Lado izquierdo con formulario de registro */}
       <div className="w-1/2 flex items-center justify-center bg-white p-8">
         <div className="w-96">
-          <h1 className="text-3xl font-bold text-yellow-500 mb-2">Crea tu cuenta</h1>
-          <p className="text-gray-600 mb-8">Llena los campos para registrarte</p>
+          <h1 className="text-5xl font-bold text-[#E5A800] mb-2">Crea tu cuenta</h1>
+          <p className="text-[#49568A] mb-8">Llena los campos para registrarte</p>
 
           {errorMessage && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-md mb-4">
+            <div className="bg-red-100 text-red-600 p-3 rounded-md mb-4">
               {errorMessage}
             </div>
           )}
@@ -44,7 +43,7 @@ const Registro = () => {
             <div>
               <input
                 type="text"
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
                 placeholder="Nombre"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -53,7 +52,7 @@ const Registro = () => {
             <div>
               <input
                 type="email"
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -62,7 +61,7 @@ const Registro = () => {
             <div>
               <input
                 type="password"
-                className="w-full p-3 border rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
                 placeholder="Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -70,16 +69,16 @@ const Registro = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-md font-medium hover:bg-blue-700 transition duration-200"
+              className="w-full bg-[#49568A] text-white py-3 rounded-md font-medium hover:bg-[#3b4672] transition duration-200"
             >
               {loading ? 'Registrando...' : 'Registrarse'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-[#49568A]">
               ¿Ya tienes una cuenta?{' '}
-              <a href="/login" className="text-blue-600 font-medium">
+              <a href="/login" className="text-[#E5A800] font-medium hover:underline">
                 Inicia sesión
               </a>
             </p>
@@ -87,14 +86,14 @@ const Registro = () => {
         </div>
       </div>
 
-      {/* Right side with image */}
+      {/* Lado derecho con imagen decorativa */}
       <div className="w-1/2 relative flex items-center justify-center overflow-hidden">
         <img 
-          src='/images/imagenpararegistro.jpg'
+          src="/images/imagenfondo.png"
           alt="Fondo decorativo"
           className="absolute inset-0 w-full h-full object-cover z-2" 
         />
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-[#49568A] bg-opacity-50"></div>
 
         <div className="relative z-10 text-center">
           <div className="flex flex-col items-center">

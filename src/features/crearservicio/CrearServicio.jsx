@@ -6,6 +6,7 @@ export default function Servicio() {
     title: '',
     description: '',
     cost: '',
+    category: '',
     image: '/api/placeholder/200/180',
     tags: []
   });
@@ -100,6 +101,23 @@ export default function Servicio() {
               />
             </div>
 
+            {/* Categoría del servicio */}
+            <div>
+              <label className="text-[#49568A] text-lg font-medium">Categoría</label>
+              <select
+                value={service.category}
+                onChange={(e) => handleFieldChange('category', e.target.value)}
+                className="w-full mt-2 text-[#49568A] border-2 border-[#E5A800] py-3 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#E5A800]"
+              >
+                <option value="">Selecciona una categoría</option>
+                <option value="Hogar y mantenimiento">Hogar y mantenimiento</option>
+                <option value="Cuidado personal y moda">Cuidado personal y moda</option>
+                <option value="Cuidado de exteriores">Cuidado de exteriores</option>
+                <option value="Tecnología y electrónica">Tecnología y electrónica</option>
+                <option value="Transporte y mecánica">Transporte y mecánica</option>
+              </select>
+            </div>
+
             {/* Etiquetas */}
             <div className="flex flex-wrap gap-4">
               {service.tags.map((tag, i) => (
@@ -115,7 +133,7 @@ export default function Servicio() {
             <div className="flex flex-col gap-4 mt-4">
               <input
                 type="text"
-                placeholder="Nueva etiqueta (Ej. Estilo, Rapidez)"
+                placeholder="Nueva etiqueta (Ej. Tapiceria, plomeria, etc.)"
                 ref={newTag}
                 className="border-2 border-[#E5A800] px-4 py-2 rounded-lg text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800] shadow-md"
               />

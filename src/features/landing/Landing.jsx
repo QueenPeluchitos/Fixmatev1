@@ -3,24 +3,24 @@ import { Link } from 'react-router-dom';
 
 const icons = {
   search: (
-    <svg className="w-6 h-6 text-[#E5A800]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <svg className="w-8 h-8 text-[#E5A800]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
     </svg>
   ),
   home: (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#E5A800]">
+    <svg className="w-8 h-8 text-[#E5A800]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
     </svg>
   ),
   heart: (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#E5A800]">
+    <svg className="w-8 h-8 text-[#E5A800]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M13.5 19.5 12 21l-7-7c-1.5-1.45-3-3.2-3-5.5A5.5 5.5 0 0 1 7.5 3c1.76 0 3 .5 4.5 2 1.5-1.5 2.74-2 4.5-2a5.5 5.5 0 0 1 5.402 6.5"/>
       <path d="M15 15h6"/>
       <path d="M18 12v6"/>
     </svg>
   ),
   flower: (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#E5A800]">
+    <svg className="w-8 h-8 text-[#E5A800]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M15 7.13V6a3 3 0 0 0-5.14-2.1L8 2"/><path d="M14.12 3.88 16 2"/><path d="M22 13h-4v-2a4 4 0 0 0-4-4h-1.3"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="m2 2 20 20"/><path d="M7.7 7.7A4 4 0 0 0 6 11v3a6 6 0 0 0 11.13 3.13"/><path d="M12 20v-8"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
     </svg>
   ),
@@ -30,12 +30,15 @@ const icons = {
     </svg>
   ),
   wrench: (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#E5A800]">
-      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>
+    <svg className="w-10 h-10 text-[#E5A800]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+      <circle cx="7" cy="17" r="2"/>
+      <path d="M9 17h6"/>
+      <circle cx="17" cy="17" r="2"/>
     </svg>
   ),
   award: (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#E5A800]">
+    <svg className="w-10 h-10 text-[#E5A800]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
     </svg>
   ),
@@ -44,6 +47,23 @@ const icons = {
 const Landing = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleServices, setVisibleServices] = useState(4);
+  const [secondaryCategories, setSecondaryCategories] = useState([
+    { name: "Tapicería", active: false },
+    { name: "Plagas", active: false },
+    { name: "Plomería", active: false },
+    { name: "Sastrería", active: true },
+    { name: "Cerrajero", active: false },
+    { name: "Coches", active: false },
+  ]);
+
+  const handleCategoryClick = (index) => {
+    setSecondaryCategories((prev) =>
+      prev.map((cat, i) => ({
+        ...cat,
+        active: i === index,
+      }))
+    );
+  };
 
   const mainCategories = [
     { icon: icons.home, name: "Hogar y mantenimiento" },
@@ -52,15 +72,6 @@ const Landing = () => {
     { icon: icons.monitor, name: "Tecnología y electrónica" },
     { icon: icons.wrench, name: "Transporte y mecánica" },
     { icon: icons.award, name: "Destacados" },
-  ];
-
-  const secondaryCategories = [
-    { name: "Tapicería", active: false },
-    { name: "Plagas", active: false },
-    { name: "Plomería", active: false },
-    { name: "Sastrería", active: true },
-    { name: "Cerrajero", active: false },
-    { name: "Coches", active: false },
   ];
 
   const services = Array(12).fill(null).map((_, i) => ({
@@ -111,6 +122,7 @@ const Landing = () => {
         {secondaryCategories.map((category, index) => (
           <button
             key={index}
+            onClick={() => handleCategoryClick(index)}
             className={`px-6 py-2 rounded-full text-sm transition-colors duration-200 ${
               category.active
                 ? "bg-[#49568A] text-white"

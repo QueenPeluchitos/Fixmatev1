@@ -6,26 +6,23 @@ import Popup from './Popup';
 const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Contenedor de Sidebar + Contenido */}
       <div className="flex flex-1">
-        {/* Sidebar fijo y alto completo */}
-        <div className="h-full">
-          <Sidebar />
-        </div>
+        {/* Sidebar que se ajusta automáticamente a la altura del contenido, incluido el footer */}
+        <Sidebar />
 
-        {/* Contenido principal */}
-        <main className="flex-grow p-4 overflow-y-auto">
+        {/* Contenido principal con scroll si es necesario */}
+        <main className="flex-1 p-4 overflow-y-auto bg-gray-100">
           <Outlet />
         </main>
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-          <Popup />
-        </div>
       </div>
 
-      {/* Footer fuera del scroll principal */}
+      {/* Footer que se mantiene al fondo */}
       <Footer />
+
+      {/* Popup flotante si es necesario */}
+      <Popup />
     </div>
-
-
   );
 };
 

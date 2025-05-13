@@ -35,11 +35,11 @@ export default function ServicioCursoProf() {
     serviceData.serviceCode !== "Ingrese aquí su código";
 
   return (
-    <div className="max-w-7xl mx-auto p-10 flex flex-col md:flex-row gap-12 bg-gray-50 my-24 text-lg">
+    <div className="max-w-7xl mx-auto p-10 flex flex-col md:flex-row gap-12 bg-white my-24 text-lg">
       {/* Columna izquierda */}
       <div className="w-full md:w-1/2 flex flex-col gap-8">
         {/* Imagen del servicio */}
-        <div className="relative rounded-2xl overflow-hidden bg-gray-200 shadow-xl">
+        <div className="relative rounded-2xl overflow-hidden bg-gray-200 shadow-xl transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
           <img 
             src="https://64.media.tumblr.com/582f42c9e8808689ea2b2e99b4203f67/968e19a567dd3e64-af/s1280x1920/38ca4ef88e479ab20d77d288d0b7397e61c7a394.png" 
             alt="Espacio de trabajo del servicio"
@@ -72,7 +72,7 @@ export default function ServicioCursoProf() {
         <div className="bg-white p-6 rounded-xl shadow-lg flex flex-col gap-4">
           <button
             onClick={handleIniciarClick}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-3 px-10 rounded-xl font-semibold text-lg shadow-lg transition self-center"
+            className="mt-4 bg-[#E5A800] hover:bg-[#D98E00] text-white py-3 px-10 rounded-xl font-semibold text-lg shadow-lg transition transform hover:scale-105"
           >
             Iniciar Servicio
           </button>
@@ -83,7 +83,7 @@ export default function ServicioCursoProf() {
       <div className="w-full md:w-1/2 flex flex-col gap-8">
         <div className="bg-white p-8 rounded-xl shadow-lg h-full flex flex-col justify-between">
           <div>
-            <h2 className="text-3xl font-bold text-gray-700 mb-8">
+            <h2 className="text-3xl font-bold text-[#49568A] mb-8">
               Detalles del Servicio
             </h2>
             
@@ -117,7 +117,7 @@ export default function ServicioCursoProf() {
               value={serviceData.serviceCode}
               onChange={handleCodeChange}
               placeholder="Ingresa código"
-              className="w-full border border-gray-300 rounded-lg p-3 text-center font-semibold text-gray-700 text-lg"
+              className="w-full border border-gray-300 rounded-lg p-3 text-center font-semibold text-gray-700 text-lg transition-transform focus:ring-2 focus:ring-[#49568A] focus:outline-none"
             />
             <div className="text-center text-gray-400 text-sm">
               Pida al cliente al finalizar el servicio
@@ -129,9 +129,9 @@ export default function ServicioCursoProf() {
               disabled={!isCodeValid}
               className={`${
                 isCodeValid
-                  ? "bg-green-600 hover:bg-green-700"
+                  ? "bg-[#49568A] hover:bg-[#3e4a6b]"
                   : "bg-gray-300 cursor-not-allowed"
-              } text-white py-3 px-10 rounded-xl font-semibold text-lg shadow-lg transition`}
+              } text-white py-3 px-10 rounded-xl font-semibold text-lg shadow-lg transition transform hover:scale-105`}
             >
               Terminar Servicio
             </button>

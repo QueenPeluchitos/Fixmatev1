@@ -57,8 +57,8 @@ const Faq = () => {
         {faqs.map((faq, index) => (
           <div key={index} className="border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             <div className="flex justify-between items-center p-4 cursor-pointer" onClick={() => toggleAnswer(index)}>
-              <h3 className="text-xl font-semibold text-gray-800">{faq.question}</h3>
-              <div className="text-[#49568A]">
+              <h3 className="text-xl font-semibold text-[#49568A]">{faq.question}</h3>
+              <div className="text-[#E5A800]">
                 {openIndex === index ? (
                   <ChevronUp size={24} />
                 ) : (
@@ -68,8 +68,8 @@ const Faq = () => {
             </div>
 
             {openIndex === index && (
-              <div className="p-4 bg-gray-50">
-                <p className="text-sm text-gray-600">{faq.answer}</p>
+              <div className="p-4 bg-[#F5F6FB]">
+                <p className="text-sm text-[#49568A]">{faq.answer}</p>
               </div>
             )}
           </div>
@@ -77,7 +77,7 @@ const Faq = () => {
       </div>
 
       <div className="mt-10 text-center">
-        <Link to="/landing" className="inline-block py-2 px-6 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 transition-colors">
+        <Link to="/landing" className="inline-block py-2 px-6 bg-[#E5A800] text-white rounded-full hover:bg-yellow-600 transition-colors">
           Volver al inicio
         </Link>
       </div>

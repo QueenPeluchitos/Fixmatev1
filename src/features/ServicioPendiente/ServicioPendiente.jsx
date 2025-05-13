@@ -26,7 +26,7 @@ export default function ServicioPendiente() {
     <div className="max-w-6xl mx-auto p-10 text-lg my-10">
       {/* Estado del servicio */}
       <div className="mb-8">
-        <div className="bg-yellow-500 text-white font-semibold py-4 px-8 rounded-lg text-center text-xl">
+        <div className="bg-yellow-500 text-white font-semibold py-4 px-8 rounded-lg text-center text-xl transition-all ease-in-out duration-300">
           Servicio pendiente
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function ServicioPendiente() {
       <div className="flex flex-col md:flex-row gap-10">
         {/* Columna izquierda */}
         <div className="w-full md:w-1/2 flex flex-col gap-8">
-          <div className="relative rounded-xl overflow-hidden bg-gray-100 shadow-lg">
+          <div className="relative rounded-xl overflow-hidden bg-white shadow-xl transition-transform duration-500 hover:scale-105">
             <img 
               src="https://64.media.tumblr.com/7c2f3e5db6cdc33d06bf9b138f2213d7/tumblr_inline_psc4587hzu1qf5zn1_1280.jpg" 
               alt="Espacio de trabajo" 
@@ -56,11 +56,11 @@ export default function ServicioPendiente() {
 
           {/* Sección de contacto */}
           <div className="text-center">
-            <h3 className="text-purple-700 text-2xl font-semibold mb-2">¿Tienes dudas?</h3>
+            <h3 className="text-[#49568A] text-2xl font-semibold mb-2">¿Tienes dudas?</h3>
             <p className="text-gray-600 mb-4">Contacta con tu profesionista</p>
             <button
               onClick={handleChatRedirect}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-8 rounded-lg font-medium transition"
+              className="bg-[#49568A] hover:bg-[#3F4A75] text-white py-3 px-8 rounded-lg font-medium transition-all ease-in-out duration-300"
             >
               Iniciar chat directo
             </button>
@@ -69,7 +69,7 @@ export default function ServicioPendiente() {
 
         {/* Columna derecha */}
         <div className="w-full md:w-1/2">
-          <div className="bg-blue-100 p-8 rounded-xl shadow-md h-full">
+          <div className="bg-white p-8 rounded-xl shadow-md h-full transition-all ease-in-out duration-300 hover:shadow-xl">
             <h2 className="text-2xl font-bold text-gray-700 mb-8">Detalles del servicio</h2>
 
             <div className="flex justify-between items-center mb-6">

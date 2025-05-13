@@ -26,19 +26,19 @@ export default function FursuitServiceCard() {
   const handleHireClick = () => navigate('/cita-usuario');
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="max-w-7xl mx-auto px-6 py-12 bg-white">
       {/* Servicio */}
-      <div className="grid lg:grid-cols-2 gap-10 bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div className="grid lg:grid-cols-2 gap-10 bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
         {/* Imagen */}
-        <div className="relative bg-gray-100">
+        <div className="relative bg-gray-100 transition-all duration-300 hover:scale-105">
           <img
             src="https://64.media.tumblr.com/582f42c9e8808689ea2b2e99b4203f67/968e19a567dd3e64-af/s1280x1920/38ca4ef88e479ab20d77d288d0b7397e61c7a394.png"
             alt="Fursuit"
-            className="object-cover h-[450px] w-full"
+            className="object-cover h-[450px] w-full transition-all duration-300 transform hover:scale-110"
           />
           
           {/* Estrellas arriba */}
-          <div className="absolute top-4 left-4 flex gap-2">
+          <div className="absolute top-4 left-4 flex gap-2 animate-pulse">
             {[...Array(4)].map((_, i) => (
               <Star key={i} size={24} fill="#FFB800" stroke="#FFB800" />
             ))}
@@ -60,7 +60,7 @@ export default function FursuitServiceCard() {
             <p className="text-gray-700 text-lg mb-6">
               Ofrezco mi servicio para hacer fursuits con experiencia en diseño, confección y acabados de alta calidad.
             </p>
-            <div className="bg-blue-50 p-5 rounded-xl space-y-4">
+            <div className="bg-blue-50 p-5 rounded-xl space-y-4 shadow-sm">
               <ul className="list-disc list-inside text-gray-700 text-base space-y-1">
                 <li>Fursuit completo</li>
                 <li>Tela de alta calidad</li>
@@ -75,7 +75,7 @@ export default function FursuitServiceCard() {
 
           <button
             onClick={handleHireClick}
-            className="mt-8 bg-[#49568A] hover:bg-[#3b476f] text-white py-3 px-6 rounded-lg text-lg flex items-center justify-center transition-all"
+            className="mt-8 bg-[#49568A] hover:bg-[#3b476f] text-white py-3 px-6 rounded-lg text-lg flex items-center justify-center transition-all duration-300 transform hover:scale-105"
           >
             <ShoppingCart className="mr-2" size={22} />
             Contratar
@@ -91,9 +91,9 @@ export default function FursuitServiceCard() {
         </p>
 
         <div className="relative">
-          <div className="grid md:grid-cols-2 gap-6 transition-all">
+          <div className="grid md:grid-cols-2 gap-6 transition-all duration-300">
             {paginatedReviews.map(review => (
-              <div key={review.id} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+              <div key={review.id} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                 <div className="flex items-start gap-4 mb-2">
                   <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-xl">
                     {review.avatar}

@@ -59,7 +59,7 @@ export default function ServicioUsuario() {
               setShowCamera(false);
               navigate('/credencial');
             }}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md"
+            className="bg-[#E5A800] hover:bg-[#D48B00] text-white px-6 py-3 rounded-md transition-all"
           >
             Confirmar escaneo
           </button>
@@ -76,14 +76,14 @@ export default function ServicioUsuario() {
       {showModal && (
         <div className="fixed inset-0 bg-white/30 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md text-center space-y-4">
-            <h2 className="text-xl font-semibold text-green-600">¡Servicio completado!</h2>
+            <h2 className="text-xl font-semibold text-[#E5A800]">¡Servicio completado!</h2>
             <p className="text-gray-700">Tu código de confirmación es:</p>
             <div className="text-2xl font-mono bg-gray-100 px-4 py-2 rounded-md border border-gray-300">
               {serviceCode}
             </div>
             <button
               onClick={() => setShowModal(false)}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
+              className="mt-4 bg-[#49568A] hover:bg-[#3F4A75] text-white px-6 py-2 rounded-md transition-all"
             >
               Listo
             </button>
@@ -92,7 +92,7 @@ export default function ServicioUsuario() {
       )}
 
       {/* Contenido principal con efecto blur si showModal está activo */}
-      <div className={`${showModal ? 'blur-sm pointer-events-none transition duration-300' : 'transition duration-300'}`}>
+      <div className={`${showModal ? 'blur-sm pointer-events-none transition-all' : 'transition-all'}`}>
         <div className="flex flex-col md:flex-row gap-10">
           {/* Imagen y botones */}
           <div className="flex-1">
@@ -100,21 +100,21 @@ export default function ServicioUsuario() {
               <img
                 src="https://i.ytimg.com/vi/Zc1IMFJN7d8/sddefault.jpg"
                 alt="Service workshop"
-                className="w-full h-96 object-cover"
+                className="w-full h-96 object-cover transition-transform transform hover:scale-105"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-6">
               <button
                 onClick={() => setShowCamera(true)}
-                className="bg-green-500 hover:bg-green-600 text-white font-medium py-4 px-6 rounded-md text-center"
+                className="bg-[#E5A800] hover:bg-[#D48B00] text-white font-medium py-4 px-6 rounded-md text-center transition-all"
               >
                 Inicio de servicio
               </button>
 
               <button
                 onClick={handleEmergencyClick}
-                className="bg-red-600 hover:bg-red-700 text-white font-medium py-4 px-6 rounded-md flex items-center justify-center gap-2"
+                className="bg-red-700 hover:bg-red-900 text-white font-medium py-4 px-6 rounded-md flex items-center justify-center gap-2 transition-all"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
@@ -126,24 +126,25 @@ export default function ServicioUsuario() {
             <div className="grid grid-cols-2 gap-6">
               <Link
                 to="/denuncia"
-                className="bg-orange-400 hover:bg-orange-500 text-white font-medium py-4 px-6 rounded-md text-center"
+                className="bg-orange-500 hover:bg-orange-700 text-white font-medium py-4 px-6 rounded-md text-center transition-all"
               >
                 Denunciar servicio
               </Link>
 
               <button
                 onClick={handleCompleteService}
-                className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md text-center"
+                className="bg-[#49568A] hover:bg-[#3F4A75] text-white font-medium py-4 px-6 rounded-md text-center transition-all"
               >
                 Servicio terminado
               </button>
+
             </div>
           </div>
 
           {/* Detalles del servicio */}
           <div className="flex-1">
-            <div className="bg-blue-100 rounded-xl p-8 h-full flex flex-col">
-              <h2 className="text-purple-700 text-2xl font-semibold mb-8 text-center">
+            <div className="bg-white text-gray-800 rounded-xl p-8 h-full flex flex-col shadow-md transition-all">
+              <h2 className="text-[#49568A] text-2xl font-semibold mb-8 text-center">
                 Detalles del servicio
               </h2>
 
@@ -172,7 +173,7 @@ export default function ServicioUsuario() {
                 <div className="mt-10">
                   <Link
                     to="/reseña"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-4 px-6 rounded-md w-full block text-center"
+                    className="bg-[#E5A800] hover:bg-[#D48B00] text-white font-medium py-4 px-6 rounded-md w-full block text-center transition-all"
                   >
                     Reseña
                   </Link>

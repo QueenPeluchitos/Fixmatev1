@@ -91,7 +91,7 @@ const Registro = () => {
         <img 
           src="/images/imagenfondo.png"
           alt="Fondo decorativo"
-          className="absolute inset-0 w-full h-full object-cover z-2" 
+          className="absolute inset-0 w-full h-full object-cover z-2 blur-xs" 
         />
         <div className="absolute inset-0 bg-[#49568A] bg-opacity-50"></div>
 

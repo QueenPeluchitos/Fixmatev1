@@ -1,10 +1,46 @@
-import {Navigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useEffect, useState, useCallback } from "react";
+import { Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { UserContext } from "./UserContext";
 
-const AuthProvider = ({ children  }) =>{
-    const isAuthenticated = Cookies.get("authToken")==="true";
-    return isAuthenticated ? children : <Navigate to="/login"/>;
+const AuthProvider = ({ children }) => {
+    const [checking, setChecking] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState(null);
+
+    // Nueva función para refrescar el usuario desde cualquier componente
+    const refreshUser = useCallback(async () => {
+        setChecking(true);
+        try {
+            const res = await fetch("http://localhost:3000/api/auth/profile", {
+                credentials: "include",
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setUser(data);
+                setIsAuthenticated(true);
+            } else {
+                setUser(null);
+                setIsAuthenticated(false);
+            }
+        } catch {
+            setUser(null);
+            setIsAuthenticated(false);
+        } finally {
+            setChecking(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        refreshUser();
+    }, [refreshUser]);
+
+    if (checking) return null; // O un loader
+    return isAuthenticated ? (
+        <UserContext.Provider value={{ user, refreshUser }}>{children}</UserContext.Provider>
+    ) : (
+        <Navigate to="/login" />
+    );
 };
 
 AuthProvider.propTypes = {

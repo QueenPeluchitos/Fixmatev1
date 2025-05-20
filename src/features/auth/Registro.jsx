@@ -1,25 +1,52 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 const Registro = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
+  const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [telefono, setTelefono] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage("");
     try {
-      console.log('User registered:', { name, email, password });
-      Cookies.set('authToken', 'true', { expires: 1, secure: true });
-      navigate('/login');
+      const response = await fetch("http://localhost:3000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nombre: name, apellido, correo: email, telefono, password }),
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        setErrorMessage(data.error || "Error en el registro. Intenta nuevamente.");
+        setLoading(false);
+        return;
+      }
+      // Registro exitoso: hacer login automático
+      const loginResponse = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ correo: email, password }),
+      });
+      if (!loginResponse.ok) {
+        setErrorMessage("Registro exitoso, pero error al iniciar sesión automáticamente. Inicia sesión manualmente.");
+        setLoading(false);
+        return;
+      }
+      navigate("/landing");
     } catch (error) {
-      console.error('Error registering:', error);
-      setErrorMessage('Error en el registro. Intenta nuevamente.');
+      console.error("Error registering:", error);
+      setErrorMessage("Error en el registro. Intenta nuevamente.");
     } finally {
       setLoading(false);
     }
@@ -51,9 +78,27 @@ const Registro = () => {
             </div>
             <div>
               <input
+                type="text"
+                className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
+                placeholder="Apellido"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
+                placeholder="Teléfono"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+              />
+            </div>
+            <div>
+              <input
                 type="email"
                 className="w-full p-3 border border-[#9BA8D9] rounded-md focus:ring-2 focus:ring-[#FFE08B] focus:outline-none"
-                placeholder="Email"
+                placeholder="Correo"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const icons = {
   search: (
@@ -55,6 +56,7 @@ const Landing = () => {
     { name: "Cerrajero", active: false },
     { name: "Coches", active: false },
   ]);
+  const navigate = useNavigate();
 
   const handleCategoryClick = (index) => {
     setSecondaryCategories((prev) =>

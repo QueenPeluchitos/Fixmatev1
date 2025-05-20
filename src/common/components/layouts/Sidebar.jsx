@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Home,
@@ -10,6 +10,7 @@ import {
   User,
   ChevronRight,
 } from 'lucide-react';
+import { UserContext } from "../../../features/auth/context/UserContext.js";
 
 const priceRanges = [
   '$10 - $50',
@@ -33,9 +34,18 @@ export default function Sidebar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState(null);
   const navigate = useNavigate();
+  const user = useContext(UserContext);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setShowDropdown(false);
+    try {
+      await fetch('http://localhost:3000/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (err) {
+      // Opcional: mostrar error
+    }
     navigate('/login');
   };
 
@@ -50,9 +60,10 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`bg-yellow-100 min-h-screen overflow-auto p-4 flex flex-col transition-all duration-300 ${
+      className={`sticky top-0 left-0 h-screen bg-yellow-100 min-h-screen overflow-auto p-4 flex flex-col transition-all duration-300 ${
         isHovered ? 'w-64' : 'w-20'
       }`}
+      style={{ zIndex: 50 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -123,7 +134,7 @@ export default function Sidebar() {
           {isHovered && (
             <>
               <div>
-                <p className="text-sm font-semibold text-gray-800">Usuario</p>
+                <p className="text-sm font-semibold text-gray-800">{user?.nombre || 'Usuario'}</p>
               </div>
               <ChevronDown className="ml-auto text-gray-500" size={16} />
             </>
@@ -140,7 +151,7 @@ export default function Sidebar() {
               <User size={16} />
               <span className="text-sm">Perfil</span>
             </div>
-            <div
+            <div //boton de cerrar sesion
               className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded cursor-pointer"
               onClick={handleLogout}
             >

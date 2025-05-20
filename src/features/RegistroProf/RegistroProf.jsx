@@ -56,11 +56,41 @@ export default function RegistroProf() {
     }
   };
 
-  const handleSubmit = () => {
-    // Simula un envío de documentos
-    alert('Documentos enviados correctamente.');
-    // Redirige a /landing después de la alerta
-    navigate('/landing');
+  const handleSubmit = async () => {
+    // Validación básica
+    if (!photo || Object.keys(documents).length < 5 || !capturedImage) {
+      alert('Por favor, sube todos los documentos y la foto biométrica.');
+      return;
+    }
+    const formData = new FormData();
+    // Foto de perfil
+    const photoFile = document.getElementById('photo-upload').files[0];
+    if (photoFile) formData.append('foto', photoFile);
+    // Documentos
+    [ 'logoComercio', 'tituloProfesional', 'ine', 'curp', 'comprobanteDomicilio' ].forEach((key) => {
+      const file = document.getElementById(`file-${key}`).files[0];
+      if (file) formData.append(key, file);
+    });
+    // Imagen biométrica (capturada de la cámara)
+    if (capturedImage) {
+      // Convertir base64 a Blob
+      const arr = capturedImage.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+      for (let i = 0; i < n; i++) u8arr[i] = bstr.charCodeAt(i);
+      formData.append('biometrico', new Blob([u8arr], { type: mime }), 'biometrico.png');
+    }
+    try {
+      // Cambia la URL por la de tu backend real
+      const response = await fetch('http://localhost:3000/api/profesionistas/solicitud', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      });
+      if (!response.ok) throw new Error('Error al enviar la solicitud');
+      alert('Documentos enviados correctamente. Tu solicitud está en revisión.');
+      navigate('/landing');
+    } catch (err) {
+      alert('Error al enviar la solicitud. Intenta nuevamente.');
+    }
   };
 
   return (

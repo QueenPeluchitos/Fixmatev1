@@ -1,16 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Star, Edit2 } from 'lucide-react';
+import { UserContext } from '../auth/context/UserContext.js';
 
 export default function PerfilUsuario() {
-  const [profileImage, setProfileImage] = useState('/api/placeholder/400/400');
+  const { user } = useContext(UserContext);
+  const [profileImage, setProfileImage] = useState('/images/placeholder.png');
   const fileInputRef = useRef(null);
 
   const [userData, setUserData] = useState({
-    nombre: 'Nombre',
-    telefono: '4430000000',
-    direccion: 'Dirección',
-    email: 'Correo electrónico',
-    emergencia: 'Contacto de emergencia',
+    nombre: '',
+    apellido: '',
+    telefono: '',
+    direccion: '',
+    email: '',
+    emergencia: '',
   });
 
   const [editField, setEditField] = useState(null);
@@ -20,6 +23,40 @@ export default function PerfilUsuario() {
     { id: 2, nombre: 'Servicio 2', estado: 'En curso', precio: '$50.00' },
     { id: 3, nombre: 'Servicio 3', estado: 'Completado', precio: '$120.00' },
   ]);
+
+  const [statusMsg, setStatusMsg] = useState(null);
+  const [statusType, setStatusType] = useState(null); // 'success' | 'error'
+  const [fadeOut, setFadeOut] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        nombre: user.nombre || '',
+        apellido: user.apellido || '',
+        telefono: user.telefono || '',
+        direccion: user.direccion || '',
+        email: user.correo || '',
+        emergencia: user.emergencia || ''
+      });
+      if (user.foto_perfil) setProfileImage(user.foto_perfil);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (statusMsg) {
+      setFadeOut(false);
+      const timer = setTimeout(() => setFadeOut(true), 4000); // Empieza a desvanecer a los 4s
+      const timerRemove = setTimeout(() => {
+        setStatusMsg(null);
+        setStatusType(null);
+        setFadeOut(false);
+      }, 5000); // Elimina a los 5s
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(timerRemove);
+      };
+    }
+  }, [statusMsg]);
 
   const handleChange = (field, value) => {
     setUserData((prev) => ({ ...prev, [field]: value }));
@@ -38,25 +75,20 @@ export default function PerfilUsuario() {
   };
 
   const handleSave = async () => {
-    const formData = new FormData();
-    Object.entries(userData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-
-    if (fileInputRef.current.files[0]) {
-      formData.append('profileImage', fileInputRef.current.files[0]);
-    }
-
+    const { direccion, ...rest } = userData;
     try {
-      const response = await fetch('/api/usuarios/123', {
-        method: 'POST',
-        body: formData,
+      const response = await fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(rest),
       });
-
       if (!response.ok) throw new Error('Error al guardar');
-      alert('Datos guardados correctamente');
+      setStatusMsg('Datos guardados correctamente');
+      setStatusType('success');
     } catch (err) {
-      alert('Error al guardar: ' + err.message);
+      setStatusMsg('Error al guardar: ' + err.message);
+      setStatusType('error');
     }
   };
 
@@ -98,11 +130,12 @@ export default function PerfilUsuario() {
                     onBlur={() => setEditField(null)}
                     autoFocus
                     className="w-full text-gray-700 border-none focus:outline-none bg-transparent"
+                    disabled={field === 'direccion'}
                   />
                 ) : (
                   <>
                     <span className="text-gray-700">{value}</span>
-                    <button onClick={() => setEditField(field)} className="text-[#E5A800] hover:text-[#E5A800] transition-all duration-200">
+                    <button onClick={() => field !== 'direccion' && setEditField(field)} className={`text-[#E5A800] hover:text-[#E5A800] transition-all duration-200 ${field === 'direccion' ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={field === 'direccion'}>
                       <Edit2 size={18} />
                     </button>
                   </>
@@ -176,6 +209,15 @@ export default function PerfilUsuario() {
             </div>
           </div>
         </div>
+
+        {/* Mensaje de estado */}
+        {statusMsg && (
+          <div
+            className={`mb-4 p-3 rounded-md font-medium text-sm transition-opacity duration-700 ${statusType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
+          >
+            {statusMsg}
+          </div>
+        )}
 
       </div>
     </div>

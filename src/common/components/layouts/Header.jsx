@@ -8,9 +8,17 @@ function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    Cookies.remove('authToken');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await fetch('http://localhost:3000/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      Cookies.remove('authToken');
+      navigate('/login');
+    } catch (err) {
+      alert('Error al cerrar sesión');
+    }
   };
 
   return (

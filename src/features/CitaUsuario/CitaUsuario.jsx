@@ -55,17 +55,6 @@ export default function CitaUsuario() {
 
   const timeSlots = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
 
-  if (confirmed) {
-    return (
-      <div className="max-w-xl mx-auto p-6 text-center bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-green-600 mb-4">¡Cita confirmada!</h2>
-        <p className="text-gray-700 mb-2">Gracias por agendar tu servicio de plomería.</p>
-        <p className="text-gray-600">Fecha: <strong>{selectedDate.toLocaleDateString()}</strong></p>
-        <p className="text-gray-600">Hora: <strong>{selectedTime}</strong></p>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg space-y-8">
       {/* Título Agendar cita */}
@@ -186,10 +175,14 @@ export default function CitaUsuario() {
           </button>
           <button
             className="px-4 py-2 bg-[#E5A800] text-white rounded-md hover:bg-[#E5A800]/90"
-            onClick={() => setConfirmed(true)}
+            onClick={() => {
+              alert("¡Tu cita ha sido confirmada!");
+              setConfirmed(true);
+            }}
           >
             Confirmar cita
           </button>
+
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { fakeLogin } from './utils/fake_login';
+// import { fakeLogin } from './utils/fake_login';
 import Cookies from 'js-cookie';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -14,13 +14,22 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fakeLogin(email, password);
-      console.log('User logged in:', response.user);
+      // Llamada real al backend
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // importante para recibir la cookie
+        body: JSON.stringify({ correo: email, password }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Error al iniciar sesión');
+      // Puedes guardar info extra si lo necesitas
       Cookies.set('authToken', 'true', { expires: 1, secure: true });
       navigate('/landing');
       setErrorMessage('');
     } catch (error) {
-      console.log('Error logging in:', error);
       setErrorMessage(error.message);
     } finally {
       setLoading(false);

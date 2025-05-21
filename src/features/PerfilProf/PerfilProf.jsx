@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Pencil, Star } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { UserContext } from '../auth/context/UserContext.js';
 
 export default function PerfilProf() {
-  const [nombre, setNombre] = useState('Juan Pérez');
-  const [telefono, setTelefono] = useState('4430000000');
-  const [direccion, setDireccion] = useState('Calle Ficticia #123');
+  const { user, refreshUser } = useContext(UserContext);
+  const [nombre, setNombre] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [direccion, setDireccion] = useState('');
   const [editandoCampo, setEditandoCampo] = useState(null);
-  const [foto, setFoto] = useState('/api/placeholder/200/200');
+  const [foto, setFoto] = useState('/archivos_usuarios/placeholder.png');
   const [fotoTemporal, setFotoTemporal] = useState('');
   const [editandoFoto, setEditandoFoto] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setNombre(user.nombre || '');
+      setTelefono(user.telefono || '');
+      setDireccion(user.direccion || '');
+      setFoto(user.foto_perfil || '/archivos_usuarios/placeholder.png');
+      setFotoTemporal(''); // Limpiar previsualización al refrescar usuario
+    }
+  }, [user]);
 
   const handleFotoChange = (e) => {
     const file = e.target.files[0];
@@ -20,10 +32,24 @@ export default function PerfilProf() {
     }
   };
 
-  const guardarFoto = () => {
-    if (fotoTemporal) {
-      setFoto(fotoTemporal);
-      setFotoTemporal('');
+  const guardarFoto = async () => {
+    if (fotoTemporal && user) {
+      // Subir la foto real
+      const fileInput = document.getElementById('foto-upload');
+      const file = fileInput.files[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append('foto', file);
+        const res = await fetch('/api/auth/profile/photo', {
+          method: 'PUT',
+          credentials: 'include',
+          body: formData,
+        });
+        if (res.ok) {
+          if (refreshUser) await refreshUser();
+        }
+      }
+      setFotoTemporal(''); // Limpiar previsualización después de guardar
       setEditandoFoto(false);
     }
   };
@@ -43,11 +69,19 @@ export default function PerfilProf() {
               className="w-32 h-32 rounded-full overflow-hidden mb-4 cursor-pointer transition-all hover:scale-105"
               onClick={() => document.getElementById('foto-upload').click()}
             >
-              <img 
-                src={fotoTemporal || foto} 
-                alt="Foto de perfil" 
-                className="w-full h-full object-cover transition-all duration-500"
-              />
+              {fotoTemporal ? (
+                <img 
+                  src={fotoTemporal} 
+                  alt="Foto de perfil previsualización" 
+                  className="w-full h-full object-cover transition-all duration-500"
+                />
+              ) : (
+                <img 
+                  src={foto ? `${foto}?${foto && foto !== '/archivos_usuarios/placeholder.png' ? Date.now() : ''}` : '/archivos_usuarios/placeholder.png'} 
+                  alt="Foto de perfil" 
+                  className="w-full h-full object-cover transition-all duration-500"
+                />
+              )}
             </div>
             <input
               type="file"

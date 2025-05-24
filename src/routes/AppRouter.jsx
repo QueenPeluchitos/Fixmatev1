@@ -10,8 +10,8 @@ import CrearServicio from '../features/crearServicio/CrearServicio';
 import CredencialProf from '../features/credencialProf/CredencialProf';
 import DenunciaUsuario from '../features/denunciaUsuario/DenunciaUsuario';
 import PerfilProf from '../features/perfilProf/PerfilProf';
-import PerfilUsuario from '../features/perfilUsuario/PerfilUsuario';
-import RegistroProf from '../features/registroProf/RegistroProf';
+import PerfilUsuario from '../features/PerfilUsuario/PerfilUsuario';
+import RegistroProf from '../features/RegistroProf/RegistroProf';
 import ResenaUsuario from '../features/resenaUsuario/ResenaUsuario';
 import ServicioCursoProf from '../features/servicioCursoProf/ServicioCursoProf';
 import ServicioPendiente from '../features/servicioPendiente/ServicioPendiente';
@@ -20,6 +20,7 @@ import ServicioUsuario from '../features/servicioUsuario/ServicioUsuario';
 import ServicioIniado from '../features/servicioIniciado/ServicioIniciado';
 import Faq from '../features/faq/Faq';
 import Soporte from '../features/soporte/Soporte';
+import RecuperarPassword from '../features/auth/RecuperarPassword';
 
 
 const AppRouter = () => (
@@ -27,6 +28,7 @@ const AppRouter = () => (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
+      <Route path="/recuperar-password" element={<RecuperarPassword />} />
       
       <Route element={<AuthProvider><Layout /></AuthProvider>}>
         <Route path="/landing" element={<Landing />} />

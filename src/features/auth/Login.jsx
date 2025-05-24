@@ -2,6 +2,7 @@ import { useState } from 'react';
 // import { fakeLogin } from './utils/fake_login';
 import Cookies from 'js-cookie';
 import { useNavigate, Link } from 'react-router-dom';
+import { sanitizeEmail, sanitizePassword } from './utils/sanitize';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,6 +14,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    // Sanitizar entradas antes de enviar
+    const cleanEmail = sanitizeEmail(email);
+    const cleanPassword = sanitizePassword(password);
+    if (!cleanEmail || !cleanPassword) {
+      setErrorMessage('Email o contraseña inválidos.');
+      setLoading(false);
+      return;
+    }
     try {
       // Llamada real al backend
       const response = await fetch('http://localhost:3000/api/auth/login', {
@@ -21,7 +30,7 @@ const Login = () => {
           'Content-Type': 'application/json',
         },
         credentials: 'include', // importante para recibir la cookie
-        body: JSON.stringify({ correo: email, password }),
+        body: JSON.stringify({ correo: cleanEmail, password: cleanPassword }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Error al iniciar sesión');
@@ -100,6 +109,11 @@ const Login = () => {
               ¿No tienes una cuenta?{' '}
               <Link to="/registro" className="text-[#E5A800] font-medium hover:underline">
                 Regístrate
+              </Link>
+            </p>
+            <p className="mt-4">
+              <Link to="/recuperar-password" className="text-[#49568A] hover:text-[#E5A800] font-medium underline">
+                ¿Olvidaste tu contraseña?
               </Link>
             </p>
           </div>

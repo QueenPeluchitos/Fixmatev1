@@ -19,13 +19,16 @@ const AuthProvider = ({ children }) => {
                 const data = await res.json();
                 setUser(data);
                 setIsAuthenticated(true);
+                console.log('AuthProvider: usuario cargado correctamente', data);
             } else {
                 setUser(null);
                 setIsAuthenticated(false);
+                console.error('AuthProvider: error al obtener el usuario. Status:', res.status);
             }
-        } catch {
+        } catch (e) {
             setUser(null);
             setIsAuthenticated(false);
+            console.error('AuthProvider: error de red/fetch al obtener usuario', e);
         } finally {
             setChecking(false);
         }

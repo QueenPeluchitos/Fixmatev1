@@ -34,7 +34,18 @@ export default function Sidebar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState(null);
   const navigate = useNavigate();
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
+
+  // Determinar el rol del usuario
+  const userRole = user?.tipo_usuario || localStorage.getItem('userRole');
+
+  // Filtrar el menú según el rol
+  const filteredMenuItems = menuItems.filter(item => {
+    if (item.label === 'Crear Servicio') {
+      return userRole === 'prof';
+    }
+    return true;
+  });
 
   const handleLogout = async () => {
     setShowDropdown(false);
@@ -51,12 +62,19 @@ export default function Sidebar() {
 
   const handleGoToProfile = () => {
     setShowDropdown(false);
-    navigate('/perfil-usuario');
+    if (user?.tipo_usuario === 'prof') {
+      navigate('/perfil-profesionista');
+    } else {
+      navigate('/perfil-usuario');
+    }
   };
 
   const handleNavigation = (path) => {
     if (path) navigate(path);
   };
+
+  // Obtener nombre de usuario solo desde contexto
+  const userName = user?.nombre;
 
   return (
     <div
@@ -79,13 +97,13 @@ export default function Sidebar() {
 
       {/* Menu */}
       <div className="flex flex-col gap-3 flex-1">
-        {menuItems.map((item, index) => (
+        {filteredMenuItems.map((item, index) => (
           <div key={index}>
             <div
               className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 cursor-pointer ${
                 item.highlighted
                   ? 'bg-yellow-400 text-white hover:bg-yellow-500'
-                  : 'text-yellow-600 hover:bg-yellow-200'
+                  : 'text-[#49568A] hover:bg-yellow-200'
               }`}
               onClick={() =>
                 item.hasSubmenu
@@ -108,7 +126,7 @@ export default function Sidebar() {
                 {priceRanges.map((range, i) => (
                   <div
                     key={i}
-                    className="text-sm text-yellow-700 hover:underline cursor-pointer"
+                    className="text-sm text-[#49568A] hover:underline cursor-pointer"
                     onClick={() => alert(`Seleccionaste: ${range}`)}
                   >
                     {range}
@@ -134,9 +152,11 @@ export default function Sidebar() {
           {isHovered && (
             <>
               <div>
-                <p className="text-sm font-semibold text-gray-800">{user?.nombre || 'Usuario'}</p>
+                <p className="text-sm font-semibold text-[#49568A]">
+                  {userName || 'Usuario'}
+                </p>
               </div>
-              <ChevronDown className="ml-auto text-gray-500" size={16} />
+              <ChevronDown className="ml-auto text-[#49568A]" size={16} />
             </>
           )}
         </div>

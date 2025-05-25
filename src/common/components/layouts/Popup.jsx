@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";  // Importa el Link desde react-router-dom
+import { UserContext } from "../../../features/auth/context/UserContext";
 
 const Popup = () => {
   const [isHovered, setIsHovered] = useState(false);
+  const { user } = useContext(UserContext);
+
+  // Si el usuario es profesionista, no mostrar el popup
+  if (user && user.tipo_usuario === "prof") return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-50">

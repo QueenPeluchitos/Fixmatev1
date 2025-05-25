@@ -42,9 +42,40 @@ export default function Servicio() {
     }));
   };
 
-  const handleSave = () => {
-    console.log('Servicio guardado:', service);
-    alert('Servicio creado exitosamente.');
+  const handleSave = async () => {
+    try {
+      // Construir el payload para el backend
+      const payload = {
+        nombre: service.title,
+        descripcion: service.description,
+        categoria: service.category,
+        precio: parseFloat(service.cost),
+        // Si tu backend acepta etiquetas, puedes agregarlas aquí
+        // tags: service.tags
+      };
+      const response = await fetch('http://localhost:3000/api/servicios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Para enviar la cookie de sesión
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Error al crear el servicio');
+      }
+      // Asegúrate de obtener el id correcto del backend
+      const data = await response.json();
+      const id = data.id_servicio || data.id || data["id_servicio"];
+      if (id) {
+        window.location.href = `/servicio-profesionista?id=${id}`;
+      } else {
+        alert('Servicio creado pero no se pudo obtener el ID.');
+      }
+    } catch (err) {
+      alert('Error al crear el servicio: ' + err.message);
+    }
   };
 
   return (

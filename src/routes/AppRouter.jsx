@@ -9,7 +9,7 @@ import CitaUsuario from '../features/CitaUsuario/CitaUsuario';
 import CrearServicio from '../features/crearServicio/CrearServicio';
 import CredencialProf from '../features/credencialProf/CredencialProf';
 import DenunciaUsuario from '../features/denunciaUsuario/DenunciaUsuario';
-import PerfilProf from '../features/perfilProf/PerfilProf';
+import PerfilProf from '../features/PerfilProf/PerfilProf';
 import PerfilUsuario from '../features/PerfilUsuario/PerfilUsuario';
 import RegistroProf from '../features/RegistroProf/RegistroProf';
 import ResenaUsuario from '../features/resenaUsuario/ResenaUsuario';

@@ -11,7 +11,13 @@ export default function PerfilUsuario() {
     nombre: '',
     apellido: '',
     telefono: '',
-    direccion: '',
+    calle: '',
+    numero: '',
+    colonia: '',
+    ciudad: '',
+    estado: '',
+    codigo_postal: '',
+    referencias: '',
     email: '',
     emergencia: '',
   });
@@ -34,7 +40,13 @@ export default function PerfilUsuario() {
         nombre: user.nombre || '',
         apellido: user.apellido || '',
         telefono: user.telefono || '',
-        direccion: user.direccion || '',
+        calle: user.direccion_completa?.calle || '',
+        numero: user.direccion_completa?.numero || '',
+        colonia: user.direccion_completa?.colonia || '',
+        ciudad: user.direccion_completa?.ciudad || '',
+        estado: user.direccion_completa?.estado || '',
+        codigo_postal: user.direccion_completa?.codigo_postal || '',
+        referencias: user.direccion_completa?.referencias || '',
         email: user.correo || '',
         emergencia: user.emergencia || ''
       });
@@ -76,6 +88,8 @@ export default function PerfilUsuario() {
 
   const handleSave = async () => {
     const { direccion, ...rest } = userData;
+    let ok = true;
+    // Guardar datos generales (excepto dirección)
     try {
       const response = await fetch('/api/auth/profile', {
         method: 'PUT',
@@ -83,12 +97,40 @@ export default function PerfilUsuario() {
         credentials: 'include',
         body: JSON.stringify(rest),
       });
-      if (!response.ok) throw new Error('Error al guardar');
+      if (!response.ok) throw new Error('Error al guardar datos generales');
+    } catch (err) {
+      setStatusMsg('Error al guardar datos generales: ' + err.message);
+      setStatusType('error');
+      ok = false;
+    }
+    // Guardar dirección (estructura completa)
+    try {
+      const direccionPayload = {
+        id_usuario: user.id_usuario,
+        calle: userData.calle || userData.direccion || '',
+        numero: userData.numero || '',
+        colonia: userData.colonia || '',
+        ciudad: userData.ciudad || '',
+        estado: userData.estado || '',
+        codigo_postal: userData.codigo_postal || '',
+        referencias: userData.referencias || '',
+      };
+      // Si tienes solo un campo de dirección, solo manda calle
+      const resDir = await fetch('/api/auth/direccion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(direccionPayload),
+      });
+      if (!resDir.ok) throw new Error('Error al guardar dirección');
+    } catch (err) {
+      setStatusMsg('Error al guardar dirección: ' + err.message);
+      setStatusType('error');
+      ok = false;
+    }
+    if (ok) {
       setStatusMsg('Datos guardados correctamente');
       setStatusType('success');
-    } catch (err) {
-      setStatusMsg('Error al guardar: ' + err.message);
-      setStatusType('error');
     }
   };
 
@@ -109,7 +151,6 @@ export default function PerfilUsuario() {
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 bg-white">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-
         {/* Perfil de Usuario */}
         <div className="bg-white shadow-xl rounded-2xl p-8 text-center border border-gray-200 transition-all transform hover:scale-105 hover:shadow-2xl">
           <div className="relative w-48 h-48 mx-auto mb-6 cursor-pointer rounded-full overflow-hidden shadow-lg transition-all transform hover:scale-110" onClick={handleImageClick}>
@@ -120,28 +161,65 @@ export default function PerfilUsuario() {
           <h2 className="text-2xl font-semibold text-[#49568A] mb-4 transition-all duration-300 hover:text-[#E5A800]">Mi Perfil</h2>
 
           <div className="space-y-4 text-left">
-            {Object.entries(userData).map(([field, value]) => (
-              <div key={field} className="flex justify-between items-center bg-yellow-50 px-4 py-2 rounded-lg hover:bg-yellow-100 transition-all duration-300">
-                {editField === field ? (
-                  <input
-                    type="text"
-                    value={value}
-                    onChange={(e) => handleChange(field, e.target.value)}
-                    onBlur={() => setEditField(null)}
-                    autoFocus
-                    className="w-full text-gray-700 border-none focus:outline-none bg-transparent"
-                    disabled={field === 'direccion'}
-                  />
-                ) : (
-                  <>
-                    <span className="text-gray-700">{value}</span>
-                    <button onClick={() => field !== 'direccion' && setEditField(field)} className={`text-[#E5A800] hover:text-[#E5A800] transition-all duration-200 ${field === 'direccion' ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={field === 'direccion'}>
-                      <Edit2 size={18} />
-                    </button>
-                  </>
-                )}
+            {/* Campos generales */}
+            {["nombre", "apellido", "telefono", "email", "emergencia"].map((field) => (
+              <div key={field} className="mb-4">
+                <label className="block text-xs text-[#49568A] font-semibold mb-1 capitalize">
+                  {field === 'emergencia' ? 'Contacto de emergencia' : field.charAt(0).toUpperCase() + field.slice(1)}
+                </label>
+                <div className="flex justify-between items-center bg-yellow-50 px-4 py-2 rounded-lg hover:bg-yellow-100 transition-all duration-300">
+                  {editField === field ? (
+                    <input
+                      type="text"
+                      value={userData[field]}
+                      onChange={(e) => handleChange(field, e.target.value)}
+                      onBlur={() => setEditField(null)}
+                      autoFocus
+                      className="w-full text-gray-700 border-none focus:outline-none bg-transparent"
+                    />
+                  ) : (
+                    <>
+                      <span className="text-gray-700">{userData[field]}</span>
+                      <button onClick={() => setEditField(field)} className="text-[#E5A800] hover:text-[#E5A800] transition-all duration-200">
+                        <Edit2 size={18} />
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             ))}
+            {/* Dirección editable por campos */}
+            <div className="mb-4">
+              <label className="block text-xs text-[#49568A] font-semibold mb-1">Dirección</label>
+              <div className="flex flex-col gap-2 bg-yellow-50 px-4 py-2 rounded-lg border border-yellow-200 hover:bg-yellow-100 transition-all duration-300">
+                {editField === 'direccion' ? (
+                  <>
+                    <input type="text" value={userData.calle} onChange={e => handleChange('calle', e.target.value)} placeholder="Calle" className="w-full border-none bg-transparent text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800]" />
+                    <input type="text" value={userData.numero} onChange={e => handleChange('numero', e.target.value)} placeholder="Número" className="w-full border-none bg-transparent text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800]" />
+                    <input type="text" value={userData.colonia} onChange={e => handleChange('colonia', e.target.value)} placeholder="Colonia" className="w-full border-none bg-transparent text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800]" />
+                    <input type="text" value={userData.ciudad} onChange={e => handleChange('ciudad', e.target.value)} placeholder="Ciudad" className="w-full border-none bg-transparent text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800]" />
+                    <input type="text" value={userData.estado} onChange={e => handleChange('estado', e.target.value)} placeholder="Estado" className="w-full border-none bg-transparent text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800]" />
+                    <input type="text" value={userData.codigo_postal} onChange={e => handleChange('codigo_postal', e.target.value)} placeholder="Código Postal" className="w-full border-none bg-transparent text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800]" />
+                    <input type="text" value={userData.referencias} onChange={e => handleChange('referencias', e.target.value)} placeholder="Referencias" className="w-full border-none bg-transparent text-[#49568A] focus:outline-none focus:ring-2 focus:ring-[#E5A800]" />
+                    <button type="button" onClick={() => setEditField(null)} className="bg-[#E5A800] hover:bg-yellow-500 text-white py-1 px-3 rounded text-sm self-end transition-all hover:scale-105">Listo</button>
+                  </>
+                ) : (
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-700">{[
+                      userData.calle,
+                      userData.numero,
+                      userData.colonia,
+                      userData.ciudad,
+                      userData.estado,
+                      userData.codigo_postal
+                    ].filter(Boolean).join(', ')}</span>
+                    <button onClick={() => setEditField('direccion')} className="text-[#E5A800] hover:text-[#E5A800] transition-all duration-200">
+                      <Edit2 size={18} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           <button
@@ -150,6 +228,16 @@ export default function PerfilUsuario() {
           >
             Guardar cambios
           </button>
+
+          {/* Mensaje de estado debajo del botón de guardar cambios */}
+          {statusMsg && (
+            <div
+              className={`mt-4 mb-2 p-3 rounded-md font-medium text-sm transition-opacity duration-700 ${statusType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
+              style={{ position: 'relative', zIndex: 2 }}
+            >
+              {statusMsg}
+            </div>
+          )}
         </div>
 
         {/* Historial y Favoritos */}
@@ -209,15 +297,6 @@ export default function PerfilUsuario() {
             </div>
           </div>
         </div>
-
-        {/* Mensaje de estado */}
-        {statusMsg && (
-          <div
-            className={`mb-4 p-3 rounded-md font-medium text-sm transition-opacity duration-700 ${statusType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
-          >
-            {statusMsg}
-          </div>
-        )}
 
       </div>
     </div>

@@ -114,6 +114,10 @@ export default function PerfilProf() {
         });
         if (res.ok) {
           if (refreshUser) await refreshUser();
+          // Refrescar Sidebar si existe
+          if (window.dispatchEvent) {
+            window.dispatchEvent(new Event('refreshUserSidebar'));
+          }
         }
       }
       setFotoTemporal(''); // Limpiar previsualización después de guardar
@@ -204,6 +208,10 @@ export default function PerfilProf() {
     return <div style={{padding: 40, color: 'red', fontWeight: 'bold'}}>Acceso denegado: tu tipo de usuario es <b>{user.tipo_usuario}</b>.<br/>Solo los profesionistas pueden ver este perfil.<br/>Revisa la consola para más detalles.</div>;
   }
 
+  // Lógica para mostrar la foto de perfil con URL absoluta si es relativa
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+  const fotoUrl = (foto && !foto.startsWith("http")) ? `${backendUrl}${foto}` : foto;
+
   const handlePrev = () => {
     setCarouselIndex((prev) => (prev > 0 ? prev - 1 : prev));
   };
@@ -240,7 +248,7 @@ export default function PerfilProf() {
                 />
               ) : (
                 <img 
-                  src={foto ? `${foto}?${foto && foto !== '/archivos_usuarios/placeholder.png' ? Date.now() : ''}` : '/archivos_usuarios/placeholder.png'} 
+                  src={fotoUrl ? `${fotoUrl}?${fotoUrl && fotoUrl !== '/archivos_usuarios/placeholder.png' ? Date.now() : ''}` : '/archivos_usuarios/placeholder.png'} 
                   alt="Foto de perfil" 
                   className="w-full h-full object-cover transition-all duration-500"
                 />

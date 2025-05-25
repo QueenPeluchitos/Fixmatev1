@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Home,
@@ -34,7 +34,17 @@ export default function Sidebar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [openSubmenuIndex, setOpenSubmenuIndex] = useState(null);
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, refreshUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const handleRefresh = async () => {
+      if (refreshUser) await refreshUser();
+    };
+    window.addEventListener('refreshUserSidebar', handleRefresh);
+    return () => {
+      window.removeEventListener('refreshUserSidebar', handleRefresh);
+    };
+  }, [refreshUser]);
 
   // Determinar el rol del usuario
   const userRole = user?.tipo_usuario || localStorage.getItem('userRole');
@@ -75,6 +85,16 @@ export default function Sidebar() {
 
   // Obtener nombre de usuario solo desde contexto
   const userName = user?.nombre;
+
+  // Lógica para mostrar la foto de perfil con URL absoluta si es relativa
+  let fotoPerfil = user?.foto_perfil;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+  if (fotoPerfil && !fotoPerfil.startsWith('http')) {
+    fotoPerfil = `${backendUrl}${fotoPerfil}`;
+  }
+  if (!fotoPerfil) {
+    fotoPerfil = "/images/placeholder.png";
+  }
 
   return (
     <div
@@ -145,7 +165,7 @@ export default function Sidebar() {
           onClick={() => setShowDropdown((prev) => !prev)}
         >
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF5TcVFjPc_Z0ZdLUAA2Df6uTrJL1C5Al4-w&s"
+            src={fotoPerfil}
             alt="Usuario"
             className="w-10 h-10 rounded-full border-2 border-yellow-500"
           />

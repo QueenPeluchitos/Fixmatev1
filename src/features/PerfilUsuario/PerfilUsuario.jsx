@@ -50,7 +50,11 @@ export default function PerfilUsuario() {
         email: user.correo || '',
         emergencia: user.emergencia || ''
       });
-      if (user.foto_perfil) setProfileImage(user.foto_perfil);
+      if (user.foto_perfil) {
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+        const fotoUrl = user.foto_perfil.startsWith('http') ? user.foto_perfil : `${backendUrl}${user.foto_perfil}`;
+        setProfileImage(fotoUrl);
+      }
     }
   }, [user]);
 

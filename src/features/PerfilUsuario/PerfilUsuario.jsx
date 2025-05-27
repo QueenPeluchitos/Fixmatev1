@@ -34,6 +34,11 @@ export default function PerfilUsuario() {
   const [statusType, setStatusType] = useState(null); // 'success' | 'error'
   const [fadeOut, setFadeOut] = useState(false);
 
+  const [show2FAModal, setShow2FAModal] = useState(false);
+  const [qrData, setQrData] = useState(null);
+  const [codigo2FA, setCodigo2FA] = useState('');
+  const [activando2FA, setActivando2FA] = useState(false);
+
   useEffect(() => {
     if (user) {
       setUserData({
@@ -150,6 +155,62 @@ export default function PerfilUsuario() {
 
   const handleFavoritoClick = (tipo) => {
     window.location.href = `/servicio-usuario?tipo=${tipo}`;
+  };
+
+  // Lógica para activar 2FA
+  const handleActivar2FA = async () => {
+    setActivando2FA(true);
+    setStatusMsg(null);
+    setStatusType(null);
+    try {
+      const res = await fetch('/api/auth/2fa/setup', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      const data = await res.json();
+      if (res.ok && data.qr) {
+        setQrData(data.qr);
+        setShow2FAModal(true);
+      } else {
+        setStatusMsg(data.message || 'Error al iniciar 2FA');
+        setStatusType('error');
+      }
+    } catch (err) {
+      setStatusMsg('Error de red al activar 2FA');
+      setStatusType('error');
+    } finally {
+      setActivando2FA(false);
+    }
+  };
+
+  // Lógica para verificar el primer código 2FA
+  const handleVerificar2FA = async (e) => {
+    e.preventDefault();
+    setStatusMsg(null);
+    setStatusType(null);
+    try {
+      const res = await fetch('/api/auth/2fa/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ code: codigo2FA }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatusMsg('2FA activado correctamente');
+        setStatusType('success');
+        setShow2FAModal(false);
+        setCodigo2FA('');
+        // Opcional: recargar perfil para reflejar el cambio
+        window.location.reload();
+      } else {
+        setStatusMsg(data.message || 'Código incorrecto');
+        setStatusType('error');
+      }
+    } catch (err) {
+      setStatusMsg('Error de red al verificar 2FA');
+      setStatusType('error');
+    }
   };
 
   return (
@@ -303,6 +364,87 @@ export default function PerfilUsuario() {
         </div>
 
       </div>
+
+      {/* Botón para activar 2FA si no está activo */}
+      {user && !user.twofa_enabled && (
+        <div className="mt-6">
+          <button
+            onClick={handleActivar2FA}
+            className="bg-[#49568A] hover:bg-[#E5A800] text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300"
+            disabled={activando2FA}
+          >
+            {activando2FA ? 'Cargando...' : 'Activar verificación 2FA'}
+          </button>
+        </div>
+      )}
+
+      {/* Estado de 2FA y opción para desactivar */}
+      {user && user.twofa_enabled && (
+        <div className="mt-6 flex flex-col items-center">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="inline-block w-3 h-3 rounded-full bg-green-500"></span>
+            <span className="text-green-700 font-semibold">Verificación 2FA activada</span>
+          </div>
+          <button
+            onClick={async () => {
+              setStatusMsg(null);
+              setStatusType(null);
+              try {
+                const res = await fetch('/api/auth/2fa/disable', {
+                  method: 'POST',
+                  credentials: 'include',
+                });
+                const data = await res.json();
+                if (res.ok) {
+                  setStatusMsg('2FA desactivada correctamente');
+                  setStatusType('success');
+                  window.location.reload();
+                } else {
+                  setStatusMsg(data.message || 'No se pudo desactivar 2FA');
+                  setStatusType('error');
+                }
+              } catch (err) {
+                setStatusMsg('Error de red al desactivar 2FA');
+                setStatusType('error');
+              }
+            }}
+            className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300"
+          >
+            Desactivar 2FA
+          </button>
+        </div>
+      )}
+
+      {/* Modal/Sección para mostrar QR y activar 2FA */}
+      {show2FAModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full relative">
+            <button onClick={() => setShow2FAModal(false)} className="absolute top-2 right-2 text-gray-400 hover:text-gray-700">✕</button>
+            <h3 className="text-xl font-bold mb-4 text-[#49568A]">Configura la verificación en dos pasos</h3>
+            <p className="mb-2 text-gray-700">Escanea este código QR con Google Authenticator o una app compatible.</p>
+            {qrData && <img src={qrData} alt="QR 2FA" className="mx-auto mb-4" style={{ width: 180, height: 180 }} />}
+            <form onSubmit={handleVerificar2FA}>
+              <label className="block mb-2 text-gray-700">Ingresa el primer código generado por tu app:</label>
+              <input
+                type="text"
+                value={codigo2FA}
+                onChange={e => setCodigo2FA(e.target.value.replace(/\D/g, ''))}
+                maxLength={6}
+                pattern="[0-9]{6}"
+                required
+                className="w-full p-2 border border-[#9BA8D9] rounded mb-4 text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-[#E5A800]"
+                placeholder="Código 2FA"
+              />
+              <button
+                type="submit"
+                className="w-full bg-[#E5A800] hover:bg-[#D48D00] text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300"
+              >
+                Activar 2FA
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -6,7 +6,7 @@ import AuthProvider from '../features/auth/context/AuthProvider';
 import Layout from '../common/components/layouts/Layout';
 import ChatDirecto from '../features/chatDirecto/ChatDirecto';
 import CitaUsuario from '../features/CitaUsuario/CitaUsuario';
-import CrearServicio from '../features/crearServicio/CrearServicio';
+import CrearServicio from '../features/crearservicio/CrearServicio';
 import CredencialProf from '../features/credencialProf/CredencialProf';
 import DenunciaUsuario from '../features/denunciaUsuario/DenunciaUsuario';
 import PerfilProf from '../features/PerfilProf/PerfilProf';
@@ -17,10 +17,11 @@ import ServicioCursoProf from '../features/servicioCursoProf/ServicioCursoProf';
 import ServicioPendiente from '../features/servicioPendiente/ServicioPendiente';
 import ServicioProf from '../features/servicioProf/ServicioProf';
 import ServicioUsuario from '../features/servicioUsuario/ServicioUsuario';
-import ServicioIniado from '../features/servicioIniciado/ServicioIniciado';
+import ServicioIniciado from '../features/ServicioIniciado/ServicioIniciado';
 import Faq from '../features/faq/Faq';
 import Soporte from '../features/soporte/Soporte';
 import RecuperarPassword from '../features/auth/RecuperarPassword';
+import Verificacion2FA from '../features/auth/Verificacion2FA';
 
 
 const AppRouter = () => (
@@ -29,6 +30,7 @@ const AppRouter = () => (
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
       <Route path="/recuperar-password" element={<RecuperarPassword />} />
+      <Route path="/verificacion-2fa" element={<Verificacion2FA />} />
       
       <Route element={<AuthProvider><Layout /></AuthProvider>}>
         <Route path="/landing" element={<Landing />} />
@@ -44,7 +46,7 @@ const AppRouter = () => (
         <Route path="/registro-profesionista" element={<RegistroProf />} />
         <Route path="/reseña" element={<ResenaUsuario />} />
         <Route path="/servicio-en-curso-profesionista" element={<ServicioCursoProf />} />
-        <Route path="/servicio-iniciado" element={<ServicioIniado />} />
+        <Route path="/servicio-iniciado" element={<ServicioIniciado />} />
         <Route path="/servicio-pendiente" element={<ServicioPendiente />} />
         <Route path="/servicio-profesionista" element={<ServicioProf />} />
         <Route path="/servicio-usuario" element={<ServicioUsuario />} />

@@ -33,6 +33,11 @@ const Login = () => {
         body: JSON.stringify({ correo: cleanEmail, password: cleanPassword }),
       });
       const data = await response.json();
+      // Si el backend indica que requiere 2FA, redirige a la vista de verificación
+      if (!response.ok && data.twofa_required) {
+        window.location.href = '/verificacion-2fa';
+        return;
+      }
       if (!response.ok) throw new Error(data.error || 'Error al iniciar sesión');
       // Puedes guardar info extra si lo necesitas
       Cookies.set('authToken', 'true', { expires: 1, secure: true });

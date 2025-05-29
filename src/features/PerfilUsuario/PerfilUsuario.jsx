@@ -367,20 +367,30 @@ export default function PerfilUsuario() {
 
       {/* Botón para activar 2FA si no está activo */}
       {user && !user.twofa_enabled && (
-        <div className="mt-6">
-          <button
-            onClick={handleActivar2FA}
-            className="bg-[#49568A] hover:bg-[#E5A800] text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300"
-            disabled={activando2FA}
-          >
-            {activando2FA ? 'Cargando...' : 'Activar verificación 2FA'}
-          </button>
+        <div className="mt-6 flex flex-col items-center w-full">
+          <div className="flex items-center gap-2 mb-2">
+            <button
+              onClick={handleActivar2FA}
+              className="bg-[#49568A] hover:bg-[#E5A800] text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 mt-8"
+              disabled={activando2FA}
+            >
+              {activando2FA ? 'Cargando...' : 'Activar verificación 2FA'}
+            </button>
+          </div>
+          <div className="w-full flex justify-center">
+            <span className="text-xs text-gray-500 mt-1 text-center max-w-xs block">
+              Necesitas una app como <b>Google Authenticator</b> o <b>Microsoft Authenticator</b> para activar la verificación en dos pasos.
+            </span>
+          </div>
+          {statusMsg && (
+            <div className={`mt-2 text-sm ${statusType === 'success' ? 'text-green-600' : 'text-red-600'}`}>{statusMsg}</div>
+          )}
         </div>
       )}
 
       {/* Estado de 2FA y opción para desactivar */}
       {user && user.twofa_enabled && (
-        <div className="mt-6 flex flex-col items-center">
+        <div className="mt-6 flex flex-col items-center w-full">
           <div className="flex items-center gap-2 mb-2">
             <span className="inline-block w-3 h-3 rounded-full bg-green-500"></span>
             <span className="text-green-700 font-semibold">Verificación 2FA activada</span>
@@ -408,10 +418,18 @@ export default function PerfilUsuario() {
                 setStatusType('error');
               }
             }}
-            className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300"
+            className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 mt-8"
           >
             Desactivar 2FA
           </button>
+          <div className="w-full flex justify-center">
+            <span className="text-xs text-gray-500 mt-1 text-center max-w-xs block">
+              Necesitas una app como <b>Google Authenticator</b> o <b>Microsoft Authenticator</b> para utilizar la verificación en dos pasos.
+            </span>
+          </div>
+          {statusMsg && (
+            <div className={`mt-2 text-sm ${statusType === 'success' ? 'text-green-600' : 'text-red-600'}`}>{statusMsg}</div>
+          )}
         </div>
       )}
 

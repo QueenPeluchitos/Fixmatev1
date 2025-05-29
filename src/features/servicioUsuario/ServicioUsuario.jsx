@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Star, ShoppingCart, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
-export default function FursuitServiceCard() {
+export default function ServicioUsuario() {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [servicio, setServicio] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  if (!id) return <div className="p-10 text-center">Servicio no válido</div>;
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/servicios/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setServicio(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [id]);
 
   const reviews = [
     { id: 1, avatar: "👤", text: "Está bien chido", rating: 2 },
@@ -24,6 +39,9 @@ export default function FursuitServiceCard() {
   );
 
   const handleHireClick = () => navigate('/cita-usuario');
+
+  if (loading) return <div className="p-10 text-center">Cargando servicio...</div>;
+  if (!servicio) return <div className="p-10 text-center">Servicio no encontrado</div>;
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 bg-white">
@@ -56,9 +74,9 @@ export default function FursuitServiceCard() {
         {/* Info */}
         <div className="p-8 flex flex-col justify-between">
           <div>
-            <h2 className="text-3xl font-bold text-yellow-600 mb-2">Servicio de Sastrería</h2>
+            <h2 className="text-3xl font-bold text-yellow-600 mb-2">{servicio.nombre}</h2>
             <p className="text-gray-700 text-lg mb-6">
-              Ofrezco mi servicio para hacer fursuits con experiencia en diseño, confección y acabados de alta calidad.
+              {servicio.descripcion}
             </p>
             <div className="bg-blue-50 p-5 rounded-xl space-y-4 shadow-sm">
               <ul className="list-disc list-inside text-gray-700 text-base space-y-1">

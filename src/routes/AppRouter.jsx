@@ -23,6 +23,11 @@ import Soporte from '../features/soporte/Soporte';
 import RecuperarPassword from '../features/auth/RecuperarPassword';
 import Verificacion2FA from '../features/auth/Verificacion2FA';
 
+import Profesionista from '../features/admin_prof/Profesionista';
+import Usuario from '../features/admin_usuario/Usuario';
+import Reportes from '../features/admin_reportes/Reportes';
+import Dashboard from '../features/dashboard/Dashboard';
+import AdminRoute from './AdminRoute';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -33,14 +38,14 @@ const AppRouter = () => (
       <Route path="/verificacion-2fa" element={<Verificacion2FA />} />
       
       <Route element={<AuthProvider><Layout /></AuthProvider>}>
+        {/* Rutas para usuarios y profesionistas (no admin) */}
         <Route path="/landing" element={<Landing />} />
-        {/* otras rutas privadas aquí */}
         <Route path="/chat-directo" element={<ChatDirecto />} />
         <Route path="/cita-usuario" element={<CitaUsuario />} />
         <Route path="/crear-servicio" element={<CrearServicio />} />
         <Route path="/credencial" element={<CredencialProf />} />
-        <Route path="/denuncia" element={<DenunciaUsuario />} /> 
-        <Route path="/faq" element={<Faq />} /> 
+        <Route path="/denuncia" element={<DenunciaUsuario />} />
+        <Route path="/faq" element={<Faq />} />
         <Route path="/perfil-profesionista" element={<PerfilProf />} />
         <Route path="/perfil-usuario" element={<PerfilUsuario />} />
         <Route path="/registro-profesionista" element={<RegistroProf />} />
@@ -51,6 +56,11 @@ const AppRouter = () => (
         <Route path="/servicio-profesionista" element={<ServicioProf />} />
         <Route path="/servicio-usuario" element={<ServicioUsuario />} />
         <Route path="/soporte" element={<Soporte />} />
+        {/* Rutas solo para admin, protegidas */}
+        <Route path="/profesionista" element={<AdminRoute><Profesionista /></AdminRoute>} />
+        <Route path="/usuario" element={<AdminRoute><Usuario /></AdminRoute>} />
+        <Route path="/reportes" element={<AdminRoute><Reportes /></AdminRoute>} />
+        <Route path="/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
       </Route>
 
       <Route path="*" element={<Login />} />

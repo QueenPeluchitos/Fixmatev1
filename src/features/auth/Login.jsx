@@ -39,10 +39,19 @@ const Login = () => {
         return;
       }
       if (!response.ok) throw new Error(data.error || 'Error al iniciar sesión');
-      // Puedes guardar info extra si lo necesitas
-      Cookies.set('authToken', 'true', { expires: 1, secure: true });
-      navigate('/landing');
-      setErrorMessage('');
+      // Redirección según tipo de usuario
+      if (data.usuario && data.usuario.tipo_usuario === 'adm') {
+        setErrorMessage('');
+        setLoading(false);
+        navigate('/dashboard', { replace: true });
+        return;
+      } else {
+        Cookies.set('authToken', 'true', { expires: 1, secure: true });
+        setErrorMessage('');
+        setLoading(false);
+        navigate('/landing', { replace: true });
+        return;
+      }
     } catch (error) {
       setErrorMessage(error.message);
     } finally {

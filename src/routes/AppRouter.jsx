@@ -54,7 +54,8 @@ const AppRouter = () => (
         <Route path="/servicio-iniciado" element={<ServicioIniciado />} />
         <Route path="/servicio-pendiente" element={<ServicioPendiente />} />
         <Route path="/servicio-profesionista" element={<ServicioProf />} />
-        <Route path="/servicio-usuario" element={<ServicioUsuario />} />
+        <Route path="/servicio-usuario/:id" element={<ServicioUsuario />} />
+       
         <Route path="/soporte" element={<Soporte />} />
         {/* Rutas solo para admin, protegidas */}
         <Route path="/profesionista" element={<AdminRoute><Profesionista /></AdminRoute>} />

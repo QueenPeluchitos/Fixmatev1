@@ -1,59 +1,52 @@
-import { useState } from 'react';
+import { useState, useContext } from "react";
 // import { fakeLogin } from './utils/fake_login';
-import Cookies from 'js-cookie';
-import { useNavigate, Link } from 'react-router-dom';
-import { sanitizeEmail, sanitizePassword } from './utils/sanitize';
+import Cookies from "js-cookie";
+import { useNavigate, Link } from "react-router-dom";
+import { sanitizeEmail, sanitizePassword } from "./utils/sanitize";
+import api from "../../hooks/apiConnection";
+import { UserContext } from "./context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const { refreshUser } = useContext(UserContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Sanitizar entradas antes de enviar
     const cleanEmail = sanitizeEmail(email);
     const cleanPassword = sanitizePassword(password);
     if (!cleanEmail || !cleanPassword) {
-      setErrorMessage('Email o contraseña inválidos.');
+      setErrorMessage("Email o contraseña inválidos.");
       setLoading(false);
       return;
     }
+    // Llamada real al backend
     try {
-      // Llamada real al backend
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // importante para recibir la cookie
-        body: JSON.stringify({ correo: cleanEmail, password: cleanPassword }),
+      const response = await api.post("/auth/login", {
+        correo: cleanEmail,
+        password: cleanPassword,
       });
-      const data = await response.json();
-      // Si el backend indica que requiere 2FA, redirige a la vista de verificación
-      if (!response.ok && data.twofa_required) {
-        window.location.href = '/verificacion-2fa';
-        return;
-      }
-      if (!response.ok) throw new Error(data.error || 'Error al iniciar sesión');
-      // Redirección según tipo de usuario
-      if (data.usuario && data.usuario.tipo_usuario === 'adm') {
-        setErrorMessage('');
-        setLoading(false);
-        navigate('/dashboard', { replace: true });
-        return;
+      const data = response.data;
+      Cookies.set("authToken", "true", { expires: 1, secure: true });
+      setErrorMessage("");
+      if ((data.usuario && data.usuario.tipo_usuario === 'adm') || data.role === 'admin') {
+        await refreshUser();
+        window.location.href = '/dashboard';
       } else {
-        Cookies.set('authToken', 'true', { expires: 1, secure: true });
-        setErrorMessage('');
-        setLoading(false);
-        navigate('/landing', { replace: true });
-        return;
+        await refreshUser();
+        window.location.href = '/landing';
       }
     } catch (error) {
-      setErrorMessage(error.message);
+      const data = error.response?.data;
+      if (data?.twofa_required) {
+        window.location.href = "/verificacion-2fa";
+        return;
+      }
+      setErrorMessage(data?.error || error.message || 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }
@@ -63,10 +56,10 @@ const Login = () => {
     <div className="flex min-h-screen bg-[#DAE0F6]">
       {/* Lado izquierdo con imagen de fondo */}
       <div className="w-1/2 relative flex items-center justify-center overflow-hidden">
-        <img 
+        <img
           src="/images/imagenfondo.png"
           alt="Fondo decorativo"
-          className="absolute inset-0 w-full h-full object-cover z-2 blur-xs" 
+          className="absolute inset-0 w-full h-full object-cover z-2 blur-xs"
         />
         <div className="absolute inset-0 bg-[#49568A] bg-opacity-50"></div>
 
@@ -81,7 +74,9 @@ const Login = () => {
       {/* Lado derecho con el formulario */}
       <div className="w-1/2 flex items-center justify-center bg-white p-8">
         <div className="w-96">
-          <h1 className="text-5xl font-bold text-[#E5A800] mb-2">Inicia sesión</h1>
+          <h1 className="text-5xl font-bold text-[#E5A800] mb-2">
+            Inicia sesión
+          </h1>
           <p className="text-[#49568A] mb-8">Ingresa tus datos</p>
 
           {errorMessage && (
@@ -114,19 +109,25 @@ const Login = () => {
               type="submit"
               className="w-full bg-[#49568A] text-white py-3 rounded-md font-medium hover:bg-[#3b4672] transition duration-200"
             >
-              {loading ? 'Cargando...' : 'Iniciar sesión'}
+              {loading ? "Cargando..." : "Iniciar sesión"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-[#49568A]">
-              ¿No tienes una cuenta?{' '}
-              <Link to="/registro" className="text-[#E5A800] font-medium hover:underline">
+              ¿No tienes una cuenta?{" "}
+              <Link
+                to="/registro"
+                className="text-[#E5A800] font-medium hover:underline"
+              >
                 Regístrate
               </Link>
             </p>
             <p className="mt-4">
-              <Link to="/recuperar-password" className="text-[#49568A] hover:text-[#E5A800] font-medium underline">
+              <Link
+                to="/recuperar-password"
+                className="text-[#49568A] hover:text-[#E5A800] font-medium underline"
+              >
                 ¿Olvidaste tu contraseña?
               </Link>
             </p>

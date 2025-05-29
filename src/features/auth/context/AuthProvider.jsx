@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
     const refreshUser = useCallback(async () => {
         setChecking(true);
         try {
-            const res = await fetch("http://localhost:3000/api/auth/profile", {
+            const res = await fetch("/api/auth/profile", {
                 credentials: "include",
             });
             if (res.ok) {

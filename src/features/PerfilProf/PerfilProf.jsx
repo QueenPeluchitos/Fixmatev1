@@ -220,6 +220,50 @@ export default function PerfilProf() {
   };
   const serviciosAMostrar = servicios.slice(carouselIndex * serviciosPorPagina, (carouselIndex + 1) * serviciosPorPagina);
 
+  // Estados y funciones dummy para evitar pantalla blanca por falta de definición
+  const [activando2FA, setActivando2FA] = useState(false);
+  const [desactivando2FA, setDesactivando2FA] = useState(false);
+  const [statusMsg, setStatusMsg] = useState('');
+  const [statusType, setStatusType] = useState('');
+
+  const handleActivar2FA = () => {};
+  const handleDesactivar2FA = () => {};
+
+  // Estado y referencia para la dirección del tooltip de 2FA (activo)
+  const [tooltipDirectionActivo, setTooltipDirectionActivo] = useState('abajo');
+  const tooltipRefActivo = useRef(null);
+  const iconoRefActivo = useRef(null);
+  // Estado y referencia para la dirección del tooltip de 2FA (inactivo)
+  const [tooltipDirectionInactivo, setTooltipDirectionInactivo] = useState('abajo');
+  const tooltipRefInactivo = useRef(null);
+  const iconoRefInactivo = useRef(null);
+
+  // Función para calcular la dirección del tooltip
+  const handleTooltipPositionActivo = () => {
+    if (!iconoRefActivo.current || !tooltipRefActivo.current) return;
+    const iconRect = iconoRefActivo.current.getBoundingClientRect();
+    const tooltipHeight = tooltipRefActivo.current.offsetHeight;
+    const espacioAbajo = window.innerHeight - iconRect.bottom;
+    const espacioArriba = iconRect.top;
+    if (espacioAbajo < tooltipHeight + 16 && espacioArriba > tooltipHeight + 16) {
+      setTooltipDirectionActivo('arriba');
+    } else {
+      setTooltipDirectionActivo('abajo');
+    }
+  };
+  const handleTooltipPositionInactivo = () => {
+    if (!iconoRefInactivo.current || !tooltipRefInactivo.current) return;
+    const iconRect = iconoRefInactivo.current.getBoundingClientRect();
+    const tooltipHeight = tooltipRefInactivo.current.offsetHeight;
+    const espacioAbajo = window.innerHeight - iconRect.bottom;
+    const espacioArriba = iconRect.top;
+    if (espacioAbajo < tooltipHeight + 16 && espacioArriba > tooltipHeight + 16) {
+      setTooltipDirectionInactivo('arriba');
+    } else {
+      setTooltipDirectionInactivo('abajo');
+    }
+  };
+
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden max-w-6xl mx-auto my-20">
       {/* Panel de perfil y servicios actuales */}
@@ -499,6 +543,53 @@ export default function PerfilProf() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Sección de verificación en dos pasos (2FA) */}
+      <div className="bg-white p-8 rounded-lg shadow-md mt-10 animate__animated animate__fadeIn">
+        {/* Botones y estado de 2FA */}
+        {user && user.twofa_enabled && (
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-sm text-green-600 font-semibold">✅ Verificación 2FA activa</span>
+            </div>
+            <button
+              onClick={handleDesactivar2FA}
+              className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 mt-8"
+              disabled={desactivando2FA}
+            >
+              {desactivando2FA ? 'Cargando...' : 'Desactivar verificación 2FA'}
+            </button>
+            <div className="w-full flex justify-center">
+              <span className="text-xs text-gray-500 mt-1 text-center max-w-xs block">
+                Necesitas una app como <b>Google Authenticator</b> o <b>Microsoft Authenticator</b> para utilizar la verificación en dos pasos.
+              </span>
+            </div>
+          </div>
+        )}
+        {user && !user.twofa_enabled && (
+          <div className="flex flex-col items-center w-full">
+            <div className="flex items-center gap-2 mb-2">
+              <button
+                onClick={handleActivar2FA}
+                className="bg-[#49568A] hover:bg-[#E5A800] text-white font-semibold py-2 px-6 rounded-lg transition-all duration-300 mt-8"
+                disabled={activando2FA}
+              >
+                {activando2FA ? 'Cargando...' : 'Activar verificación 2FA'}
+              </button>
+            </div>
+            <div className="w-full flex justify-center">
+              <span className="text-xs text-gray-500 mt-1 text-center max-w-xs block">
+                Necesitas una app como <b>Google Authenticator</b> o <b>Microsoft Authenticator</b> para activar la verificación en dos pasos.
+              </span>
+            </div>
+            {statusMsg && (
+              <div className={`mt-2 text-sm ${statusType === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                {statusMsg}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

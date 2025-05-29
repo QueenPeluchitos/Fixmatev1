@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 // import { fakeLogin } from './utils/fake_login';
 import Cookies from "js-cookie";
 import { useNavigate, Link } from "react-router-dom";
 import { sanitizeEmail, sanitizePassword } from "./utils/sanitize";
 import api from "../../hooks/apiConnection";
+import { UserContext } from "./context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { refreshUser } = useContext(UserContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,10 +33,12 @@ const Login = () => {
       const data = response.data;
       Cookies.set("authToken", "true", { expires: 1, secure: true });
       setErrorMessage("");
-      if (data.role === "admin") {
-        navigate("/admin/dashboard");
+      if ((data.usuario && data.usuario.tipo_usuario === 'adm') || data.role === 'admin') {
+        await refreshUser();
+        window.location.href = '/dashboard';
       } else {
-        navigate("/landing");
+        await refreshUser();
+        window.location.href = '/landing';
       }
     } catch (error) {
       const data = error.response?.data;

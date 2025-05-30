@@ -50,8 +50,8 @@ export default function ServicioUsuario() {
         {/* Imagen */}
         <div className="relative bg-gray-100 transition-all duration-300 hover:scale-105">
           <img
-            src="https://64.media.tumblr.com/582f42c9e8808689ea2b2e99b4203f67/968e19a567dd3e64-af/s1280x1920/38ca4ef88e479ab20d77d288d0b7397e61c7a394.png"
-            alt="Fursuit"
+            src={servicio.imagen || "https://via.placeholder.com/600x450?text=Sin+Imagen"}
+            alt={servicio.nombre}
             className="object-cover h-[450px] w-full transition-all duration-300 transform hover:scale-110"
           />
           

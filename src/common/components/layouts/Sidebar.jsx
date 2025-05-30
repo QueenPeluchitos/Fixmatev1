@@ -11,6 +11,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { UserContext } from "../../../features/auth/context/UserContext.js";
+import perfilUsuario from '../../../assets/perfil-de-usuario.webp';
 
 const priceRanges = [
   '$10 - $50',
@@ -93,7 +94,7 @@ export default function Sidebar() {
     fotoPerfil = `${backendUrl}${fotoPerfil}`;
   }
   if (!fotoPerfil) {
-    fotoPerfil = "/images/placeholder.png";
+    fotoPerfil = perfilUsuario;
   }
 
   return (

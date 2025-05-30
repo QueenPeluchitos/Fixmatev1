@@ -10,8 +10,8 @@ export default function RecuperarPassword() {
     setLoading(true);
     setStatus(null);
     try {
-      // Llama a tu endpoint real de recuperación de contraseña
-      const response = await fetch('http://localhost:3000/api/auth/recuperar-password', {
+      // Llama al endpoint real de recuperación de contraseña (ajustado a la nueva ruta)
+      const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo: email }),

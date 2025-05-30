@@ -9,6 +9,7 @@ import {
   LogOut,
   ChevronDown,
 } from 'lucide-react';
+import perfilUsuario from '../../../assets/perfil-de-usuario.webp';
 
 const Sidebar = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -94,9 +95,9 @@ const Sidebar = () => {
           onClick={() => setShowDropdown((prev) => !prev)}
         >
           <img
-            src="https://randomuser.me/api/portraits/men/32.jpg"
+            src={perfilUsuario}
             alt="Admin"
-            className="w-10 h-10 rounded-full border-2 border-[#49568A]"
+            className="w-10 h-10 rounded-full border-2 border-[#49568A] object-cover"
           />
           {isHovered && (
             <>

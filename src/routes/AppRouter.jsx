@@ -22,6 +22,7 @@ import Faq from '../features/faq/Faq';
 import Soporte from '../features/soporte/Soporte';
 import RecuperarPassword from '../features/auth/RecuperarPassword';
 import Verificacion2FA from '../features/auth/Verificacion2FA';
+import RestablecerPassword from '../features/auth/RestablecerPassword';
 
 import Profesionista from '../features/admin_prof/Profesionista';
 import Usuario from '../features/admin_usuario/Usuario';
@@ -35,6 +36,7 @@ const AppRouter = () => (
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
       <Route path="/recuperar-password" element={<RecuperarPassword />} />
+      <Route path="/restablecer-password" element={<RestablecerPassword />} />
       <Route path="/verificacion-2fa" element={<Verificacion2FA />} />
       
       <Route element={<AuthProvider><Layout /></AuthProvider>}>
